@@ -11,6 +11,7 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+        System.out.println(this.toString());
     }
 
     public String getUserId() {
