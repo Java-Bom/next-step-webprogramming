@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RequestHeaderContainerTest {
+class RequestUriContainerTest {
 
     @DisplayName("라인별 요청헤더에서 url를 찾아준다")
     @Test
@@ -17,7 +17,7 @@ class RequestHeaderContainerTest {
         List<String> headers = Arrays.asList("GET TEST", "NEW");
 
         //when
-        RequestHeaderContainer container = new RequestHeaderContainer();
+        RequestUriContainer container = new RequestUriContainer();
         headers.forEach(container::add);
 
         //then
