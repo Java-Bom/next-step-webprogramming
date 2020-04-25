@@ -5,11 +5,10 @@ import util.HttpRequestUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BodyContainer {
+public class BodyExtractor {
     private static final Map<String, Class<?>> BODY_PARSER;
 
     static {
@@ -17,15 +16,15 @@ public class BodyContainer {
         BODY_PARSER.put("/user/create", User.class);
     }
 
-    public static Class<?> findBy(String requestUrl){
+    public static Class<?> findBy(String requestUrl) {
         System.out.println(requestUrl);
-        if(!BODY_PARSER.containsKey(requestUrl)){
+        if (!BODY_PARSER.containsKey(requestUrl)) {
             throw new RuntimeException();
         }
         return BODY_PARSER.get(requestUrl);
     }
 
-    public static <T> T BodyContainer(Class<T> tClass, String bodyString) {
+    public static <T> T extract(Class<T> tClass, String bodyString) {
         Map<String, String> body = HttpRequestUtils.parseQueryString(bodyString);
         try {
             Constructor<T> constructor = tClass.getConstructor(null);

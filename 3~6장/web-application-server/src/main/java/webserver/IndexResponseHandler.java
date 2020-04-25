@@ -18,10 +18,15 @@ public class IndexResponseHandler implements ResponseHandler {
 
     @Override
     public void response(DataOutputStream dos) throws IOException {
-        byte[] body = Files.readAllBytes(new File("./webapp/"+htmlName).toPath());
+        byte[] body = Files.readAllBytes(new File("./webapp/" + htmlName).toPath());
         response200Header(dos, body.length);
         dos.write(body, 0, body.length);
         dos.flush();
+    }
+
+    @Override
+    public void response(final DataOutputStream dos, final String bodyString) throws IOException {
+        throw new RuntimeException();
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
