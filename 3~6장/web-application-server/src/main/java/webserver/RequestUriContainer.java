@@ -9,6 +9,7 @@ public class RequestUriContainer {
     private Method method;
     private Map<String, String> queryString;
     private String httpVersion;
+    private Map<String, String> cookie;
 
     public RequestUriContainer(String requestUriString) {
         String[] requestUri = requestUriString.split(" ");
@@ -20,6 +21,8 @@ public class RequestUriContainer {
         this.method = Method.valueOf(requestUri[0]);
         extractUrl(requestUri[1]);
         this.httpVersion = requestUri[2];
+
+
     }
 
     private void extractUrl(String url) {
@@ -37,19 +40,26 @@ public class RequestUriContainer {
         GET, POST
     }
 
-    public boolean isPost(){
+    public boolean isPost() {
         return Method.POST == method;
     }
 
-    public boolean isGet(){
+    public boolean isGet() {
         return Method.GET == method;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return this.url;
     }
 
-    public String getUri(){
-        return this.method.toString()+this.url;
+    public Method getMethod() {
+        return method;
     }
+
+    public RequestInfo getUri() {
+        String logined = this.cookie.get("logined");
+        return new RequestInfo(this.method, this.url, logined);
+    }
+
+
 }

@@ -1,12 +1,12 @@
 package util;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
     public static Map<String, String> parseQueryString(String queryString) {
@@ -50,7 +50,7 @@ public class HttpRequestUtils {
         String key;
         String value;
 
-        Pair(String key, String value) {
+        public Pair(String key, String value) {
             this.key = key.trim();
             this.value = value.trim();
         }

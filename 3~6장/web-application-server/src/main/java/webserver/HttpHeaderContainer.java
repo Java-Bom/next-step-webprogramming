@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class HttpHeaderContainer {
     private List<HttpRequestUtils.Pair> container = new ArrayList<>();
-    private Map<String,String> body = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
 
     public void extractHeader(BufferedReader br) throws IOException {
         String line = br.readLine();
@@ -20,9 +20,26 @@ public class HttpHeaderContainer {
             container.add(pair);
             line = br.readLine();
         }
+        String cookiesString = getCookies();
+        this.cookies = HttpRequestUtils.parseCookies(cookiesString);
     }
 
-    public int getContentLength(){
+    private String getCookies() {
+        return container.stream()
+                .filter(pair -> pair.getKey().equals("Cookie"))
+                .findFirst()
+                .orElseGet(() -> new HttpRequestUtils.Pair("Cookie", ""))
+                .getValue();
+    }
+
+    public String getLogined() {
+        if (this.cookies.get("logined") == null) {
+            return "false";
+        }
+        return "true";
+    }
+
+    public int getContentLength() {
         return Integer.parseInt(container.stream()
                 .filter(pair -> pair.getKey().equals("Content-Length"))
                 .findFirst()
