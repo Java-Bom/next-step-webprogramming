@@ -1,4 +1,4 @@
-package webserver;
+package webserver.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,11 @@ public class UserFindResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public void response(final DataOutputStream dos) throws IOException {
+    public void response(final DataOutputStream dos, final String bodyString) throws IOException {
         String responseText = supplier.get();
         byte[] body = responseText.getBytes();
         response200Header(dos, body);
-    }
 
-    @Override
-    public void response(final DataOutputStream dos, final String bodyString) throws IOException {
-        throw new RuntimeException();
     }
 
     private void response200Header(DataOutputStream dos, byte[] body) {

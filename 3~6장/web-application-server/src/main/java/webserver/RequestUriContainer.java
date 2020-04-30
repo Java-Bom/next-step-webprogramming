@@ -44,10 +44,6 @@ public class RequestUriContainer {
         return Method.POST == method;
     }
 
-    public boolean isGet() {
-        return Method.GET == method;
-    }
-
     public String getUrl() {
         return this.url;
     }
@@ -56,10 +52,6 @@ public class RequestUriContainer {
         return method;
     }
 
-    public RequestInfo getUri() {
-        String logined = this.cookie.get("logined");
-        return new RequestInfo(this.method, this.url, logined);
-    }
 
 
 }
