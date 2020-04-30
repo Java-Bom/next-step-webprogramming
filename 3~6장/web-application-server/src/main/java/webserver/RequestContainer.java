@@ -1,6 +1,11 @@
 package webserver;
 
 import util.IOUtils;
+import webserver.handler.FileResponseHandler;
+import webserver.handler.LoginResponseHandler;
+import webserver.handler.ResponseHandler;
+import webserver.handler.UserFindResponseHandler;
+import webserver.handler.UserResponseHandler;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,15 +20,22 @@ public class RequestContainer {
 
     static {
         RES = new HashMap<>();
-        RES.put(new RequestInfo(RequestUriContainer.Method.GET, "/index.html", true), new IndexResponseHandler("index.html"));
-        RES.put(new RequestInfo(RequestUriContainer.Method.GET, "/user/form.html", true), new IndexResponseHandler("user/form.html"));
-        RES.put(new RequestInfo(RequestUriContainer.Method.GET, "/user/login.html", true), new IndexResponseHandler("user/login.html"));
+        initResource();
         RES.put(new RequestInfo(RequestUriContainer.Method.POST, "/user/create", true), new UserResponseHandler(new UserController()::create));
         RES.put(new RequestInfo(RequestUriContainer.Method.POST, "/user/login", true), new LoginResponseHandler(new UserController()::login));
         RES.put(new RequestInfo(RequestUriContainer.Method.GET, "/user/list", false), new UserFindResponseHandler(new UserController()::getUsers));
+
     }
 
     private String bodyString;
+
+    private static void initResource() {
+        ResourceExtractor resourceExtractor = new ResourceExtractor("./webapp");
+        for (String path : resourceExtractor.getPaths()) {
+            RES.put(new RequestInfo(RequestUriContainer.Method.GET, path, true), new FileResponseHandler(path));
+        }
+    }
+
 
     public void extractRequest(BufferedReader br) throws IOException {
         String uriString = br.readLine();
@@ -39,16 +51,18 @@ public class RequestContainer {
     public void response(DataOutputStream dos) throws IOException {
         RequestUriContainer.Method method = this.uriContainer.getMethod();
         String url = this.uriContainer.getUrl();
-        String logined = headerContainer.getLogined();
-        RequestInfo requestInfo = new RequestInfo(method, url, logined);
+        RequestInfo requestInfo = new RequestInfo(method, url);
 
-        if (requestInfo.isGet()) {
-            RES.get(requestInfo)
-                    .response(dos);
+        ResponseHandler responseHandler = RES.entrySet().stream()
+                .filter((entry) -> entry.getKey().equals(requestInfo))
+                .filter(entry -> entry.getKey().enableAccess(this.headerContainer.getLogined()))
+                .findFirst()
+                .orElseThrow(RuntimeException::new)
+                .getValue();
 
-        } else if (requestInfo.isPost()) {
-            RES.get(requestInfo)
-                    .response(dos, bodyString);
-        }
+        responseHandler.response(dos, this.bodyString);
     }
+
+
+
 }

@@ -1,25 +1,23 @@
 package webserver;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-class RequestUriContainerTest {
+public class ResourceExtractor {
+    private final String rootPath;
+    private final List<String> paths;
 
-    @DisplayName("라인별 요청헤더에서 url를 찾아준다")
-    @Test
-    void add() {
-        //given
-        File file = new File("./webapp").getAbsoluteFile();
-        List<String> extractFiles = extractFile(file);
-        for (String extractFile : extractFiles) {
-            System.out.println(extractFile);
-        }
+    public ResourceExtractor(String rootPath) {
+        this.rootPath = rootPath;
+        File file = new File(rootPath);
+        this.paths = extractFile(file);
     }
 
+    public List<String> getPaths() {
+        return paths;
+    }
 
     private List<String> extractFile(File file) {
         List<String> filePath = new ArrayList<>();
@@ -30,12 +28,12 @@ class RequestUriContainerTest {
                 return new ArrayList<>();
             }
 
-            for (File f : file.listFiles()) {
+            for (File f : Objects.requireNonNull(file.listFiles())) {
                 List<String> extractPaths = extractFile(f);
                 filePath.addAll(extractPaths);
             }
         } else {
-            filePath.add(file.getPath());
+            filePath.add(splitRootPath(file.getPath()));
         }
 
         return filePath;
@@ -45,4 +43,8 @@ class RequestUriContainerTest {
         return file.listFiles() != null;
     }
 
+
+    private String splitRootPath(String path) {
+        return path.split(this.rootPath)[1];
+    }
 }

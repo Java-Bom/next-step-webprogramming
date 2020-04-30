@@ -1,9 +1,10 @@
-package webserver;
+package webserver.handler;
 
 import exception.UserNotFoundException;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.BodyExtractor;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -19,10 +20,6 @@ public class LoginResponseHandler implements ResponseHandler {
         this.function = function;
     }
 
-    @Override
-    public void response(final DataOutputStream dos) throws IOException {
-        throw new RuntimeException();
-    }
 
     @Override
     public void response(final DataOutputStream dos, final String bodyString) throws IOException {
