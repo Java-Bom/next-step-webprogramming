@@ -38,7 +38,6 @@ public class RequestHandler extends Thread {
             int contentsLength = 0;
             String cookie ="";
             while (!"".equals(line)) {
-                log.info(line);
                 if (line == null) {
                     return;
                 }

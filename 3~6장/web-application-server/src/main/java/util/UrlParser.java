@@ -21,7 +21,6 @@ public class UrlParser {
         return url.substring(0, baseIndex);
     }
 
-
     public static String getRequestParams(String url) {
         int baseIndex = url.indexOf("?");
         return url.substring(baseIndex+1);
