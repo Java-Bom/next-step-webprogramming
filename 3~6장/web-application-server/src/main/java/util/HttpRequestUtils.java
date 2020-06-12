@@ -1,16 +1,26 @@
 package util;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-
 public class HttpRequestUtils {
+
+    private static final String REQUEST_DELIMITER = " ";
+
     /**
-     * @param queryString은
-     *            URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
+     * @param getRequest Get /index.html HTTP/1.1 과 같이 한줄로 들어오는 Request 첫번째 라인
+     * @return URL 위에서 /index.html 만 추출하여 return
+     */
+    public static String parseUrl(String getRequest) {
+        return getRequest.split(REQUEST_DELIMITER)[1];
+    }
+
+    /**
+     * @param queryString은 URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
      * @return
      */
     public static Map<String, String> parseQueryString(String queryString) {
