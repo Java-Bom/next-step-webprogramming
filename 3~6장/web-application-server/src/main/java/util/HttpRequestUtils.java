@@ -13,10 +13,27 @@ public class HttpRequestUtils {
 
     /**
      * @param getRequest Get /index.html HTTP/1.1 과 같이 한줄로 들어오는 Request 첫번째 라인
+     *                   /user/create/?userId=abc 와 같이 들어오는 경우 ? 를 기준으로 앞의 url만 추출
      * @return URL 위에서 /index.html 만 추출하여 return
      */
-    public static String parseUrl(String getRequest) {
-        return getRequest.split(REQUEST_DELIMITER)[1];
+    public static String extractUrlPath(String getRequest) {
+        String url = getRequest.split(REQUEST_DELIMITER)[1];
+        if (url.contains("?")) {
+            return url.substring(0, url.indexOf("?"));
+        }
+        return url;
+    }
+
+    /**
+     * @param getRequest
+     * @return ?query 부분만 출력
+     */
+    public static String extractUrlQuery(String getRequest) {
+        String url = getRequest.split(REQUEST_DELIMITER)[1];
+        if (!url.contains("?")) {
+            throw new IllegalArgumentException("파라미터가 존재하지 않습니다.");
+        }
+        return url.substring(url.indexOf("?") + 1);
     }
 
     /**
