@@ -13,8 +13,38 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class HttpRequestEntityTest {
 
-    @DisplayName("header 파싱")
+    private String testDirectory = "./src/test/resources/";
+
     @Test
+    @DisplayName("Get 요청을 보낸다.")
+    void requestGet() throws FileNotFoundException {
+        InputStream in = new FileInputStream(new File(testDirectory + "Http_GET.txt"));
+        HttpRequestEntity requestEntity = new HttpRequestEntity(in);
+
+        RequestStatusLine statusLine = requestEntity.getStatusLine();
+
+        assertThat(statusLine.getMethod()).isEqualTo("GET");
+        assertThat(statusLine.getPath()).isEqualTo("/user/create");
+        assertThat(requestEntity.getConnection()).isEqualTo("keep-alive");
+        assertThat(statusLine.getParams().get("userId")).isEqualTo("javabom");
+    }
+
+    @Test
+    @DisplayName("Post 요청을 보낸다.")
+    void requestPost() throws FileNotFoundException {
+        InputStream in = new FileInputStream(new File(testDirectory + "Http_POST.txt"));
+        HttpRequestEntity requestEntity = new HttpRequestEntity(in);
+
+        RequestStatusLine statusLine = requestEntity.getStatusLine();
+
+        assertThat(statusLine.getMethod()).isEqualTo("POST");
+        assertThat(statusLine.getPath()).isEqualTo("/user/create");
+        assertThat(requestEntity.getConnection()).isEqualTo("keep-alive");
+        assertThat(requestEntity.getBody().get("userId")).isEqualTo("javabom");
+    }
+
+    @Test
+    @DisplayName("header 파싱")
     void name() {
         String header = "GET http://goddaehee.tistory.com/168 HTTP/1.1\n" +
                 "Host: goddaehee.tistory.com\n" +
@@ -26,8 +56,7 @@ class HttpRequestEntityTest {
                 "Accept-Encoding: gzip, deflate\n" +
                 "Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7;";
         InputStream inputStream = new ByteArrayInputStream(header.getBytes());
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        HttpRequestEntity httpRequestEntity = new HttpRequestEntity(bufferedReader);
+        HttpRequestEntity httpRequestEntity = new HttpRequestEntity(inputStream);
 
         assertAll(
                 () -> assertThat(httpRequestEntity.getStatusLine().getMethod()).isEqualTo("GET"),
@@ -49,9 +78,11 @@ class HttpRequestEntityTest {
                 "\n" +
                 bodyConents;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(header.getBytes())));
-        HttpRequestEntity httpRequestEntity = new HttpRequestEntity(br);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(header.getBytes());
+        HttpRequestEntity httpRequestEntity = new HttpRequestEntity(byteArrayInputStream);
 
-        assertThat(httpRequestEntity.getBody()).isEqualTo("userId=javajigi&password=password&name=Jaesung");
+        assertThat(httpRequestEntity.getBody().get("userId")).isEqualTo("javajigi");
+        assertThat(httpRequestEntity.getBody().get("password")).isEqualTo("password");
+        assertThat(httpRequestEntity.getBody().get("name")).isEqualTo("Jaesung");
     }
 }

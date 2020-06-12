@@ -4,8 +4,7 @@ import myServer.exception.InternalServerException;
 import util.HttpRequestUtils;
 import util.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +17,14 @@ public class HttpRequestEntity {
     private Map<String, String> headers;
     private Map<String, String> body;
 
-    public HttpRequestEntity(BufferedReader br) {
+    private HttpRequestEntity(){}
+
+    public HttpRequestEntity(InputStream in) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         try {
             this.headers = makeHttpRequestHeaderMap(br);
             this.statusLine = new RequestStatusLine(headers.get(STATUS_LINE));
-            if(getContentLength() != null){
+            if (getContentLength() != null) {
                 this.body = makeHttpRequestBodyMap(br);
             }
         } catch (IOException e) {
@@ -68,7 +70,7 @@ public class HttpRequestEntity {
         return headers;
     }
 
-    private Map<String, String> makeHttpRequestBodyMap(BufferedReader br) throws IOException{
+    private Map<String, String> makeHttpRequestBodyMap(BufferedReader br) throws IOException {
         String body = IOUtils.readData(br, Integer.parseInt(getContentLength()));
         return HttpRequestUtils.parseQueryString(body);
     }

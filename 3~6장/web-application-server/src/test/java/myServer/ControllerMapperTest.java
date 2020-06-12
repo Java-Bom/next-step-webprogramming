@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ControllerMapperTest {
 
     private HttpRequestEntity makeHttptRequestEntity(String statusLine){
-        BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(statusLine.getBytes())));
-        return new HttpRequestEntity(br);
+        ByteArrayInputStream in = new ByteArrayInputStream(statusLine.getBytes());
+        return new HttpRequestEntity(in);
     }
 
     @Test

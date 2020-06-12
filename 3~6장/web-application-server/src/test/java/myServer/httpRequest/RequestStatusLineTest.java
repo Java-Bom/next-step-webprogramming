@@ -3,10 +3,12 @@ package myServer.httpRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Created by jyami on 2020/04/25
  */
-class StatusLineTest {
+class RequestStatusLineTest {
     @DisplayName("statusLine 값 매핑 확인")
     @Test
     void subStringTest() {
