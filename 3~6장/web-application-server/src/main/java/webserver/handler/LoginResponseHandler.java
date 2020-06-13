@@ -1,10 +1,10 @@
 package webserver.handler;
 
-import exception.UserNotFoundException;
-import model.User;
+import domain.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.BodyExtractor;
+import webserver.exception.UserNotFoundException;
+import webserver.extractor.BodyExtractor;
 
 import java.io.DataOutputStream;
 import java.io.File;

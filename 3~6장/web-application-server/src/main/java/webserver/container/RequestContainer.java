@@ -1,11 +1,15 @@
-package webserver;
+package webserver.container;
 
+import controller.UserController;
+import domain.model.User;
 import util.IOUtils;
+import webserver.dto.RequestInfo;
+import webserver.extractor.ResourceExtractor;
 import webserver.handler.FileResponseHandler;
 import webserver.handler.LoginResponseHandler;
+import webserver.handler.RedirectResponseHandler;
 import webserver.handler.ResponseHandler;
 import webserver.handler.UserFindResponseHandler;
-import webserver.handler.UserResponseHandler;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -21,10 +25,9 @@ public class RequestContainer {
     static {
         RES = new HashMap<>();
         initResource();
-        RES.put(new RequestInfo(RequestUriContainer.Method.POST, "/user/create", true), new UserResponseHandler(new UserController()::create));
+        RES.put(new RequestInfo(RequestUriContainer.Method.POST, "/user/create", true), new RedirectResponseHandler<>(new UserController()::create, User.class));
         RES.put(new RequestInfo(RequestUriContainer.Method.POST, "/user/login", true), new LoginResponseHandler(new UserController()::login));
         RES.put(new RequestInfo(RequestUriContainer.Method.GET, "/user/list", false), new UserFindResponseHandler(new UserController()::getUsers));
-
     }
 
     private String bodyString;
@@ -62,7 +65,6 @@ public class RequestContainer {
 
         responseHandler.response(dos, this.bodyString);
     }
-
 
 
 }

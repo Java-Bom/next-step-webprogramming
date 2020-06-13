@@ -1,27 +1,27 @@
 package webserver.handler;
 
-import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.BodyExtractor;
+import webserver.extractor.BodyExtractor;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.function.Function;
 
-public class UserResponseHandler implements ResponseHandler {
+public class RedirectResponseHandler<T> implements ResponseHandler {
     private static final Logger log = LoggerFactory.getLogger(IndexResponseHandler.class);
-    private final Function<User, String> function;
+    private final Function<T, String> function;
+    private final Class<T> requestType;
 
-    public UserResponseHandler(final Function<User, String> function) {
+    public RedirectResponseHandler(final Function<T, String> function, final Class<T> requestType) {
         this.function = function;
+        this.requestType = requestType;
     }
-
 
     @Override
     public void response(final DataOutputStream dos, final String bodyString) throws IOException {
-        User user = BodyExtractor.extract(User.class, bodyString);
-        String response = this.function.apply(user);
+        T extract = BodyExtractor.extract(requestType, bodyString);
+        String response = this.function.apply(extract);
 
         try {
             dos.writeBytes("HTTP/1.1 302 Found\n \r\n");
