@@ -26,8 +26,7 @@ public class HttpRequest {
         this.path = HttpRequestUtils.extractUrlPath(line);
         this.queryParameters = new HttpQueryParameters(this.path);
         this.httpHeaders = new HttpHeaders(toHttpHeaderStrings(br));
-        int contentLength = (int) this.httpHeaders.getHeader(HttpHeader.CONTENT_LENGTH).orElse(0);
-        this.httpBody = new HttpBody(contentLength, IOUtils.readData(br, contentLength));
+        this.httpBody = new HttpBody(IOUtils.readData(br, this.httpHeaders.getHeader(HttpHeader.CONTENT_LENGTH)));
     }
 
     private List<String> toHttpHeaderStrings(final BufferedReader br) throws IOException {

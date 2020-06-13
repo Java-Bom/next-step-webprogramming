@@ -2,6 +2,7 @@ package util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class IOUtils {
     /**
@@ -15,6 +16,15 @@ public class IOUtils {
     public static String readData(BufferedReader br, int contentLength) throws IOException {
         char[] body = new char[contentLength];
         br.read(body, 0, contentLength);
+        return String.copyValueOf(body);
+    }
+
+    public static String readData(BufferedReader br, String contentLength) throws IOException {
+        if (Objects.isNull(contentLength)) {
+            return "";
+        }
+        char[] body = new char[Integer.parseInt(contentLength)];
+        br.read(body, 0, Integer.parseInt(contentLength));
         return String.copyValueOf(body);
     }
 }
