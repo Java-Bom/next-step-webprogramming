@@ -1,8 +1,8 @@
-package webserver;
+package controller;
 
 import db.DataBase;
-import exception.UserNotFoundException;
-import model.User;
+import domain.model.User;
+import webserver.exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package webserver;
+package webserver.extractor;
 
 import java.io.File;
 import java.util.ArrayList;
