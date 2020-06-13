@@ -1,19 +1,14 @@
 package webserver.handler;
 
 import domain.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import http.request.HttpRequest;
+import http.response.HttpResponse;
 import webserver.exception.UserNotFoundException;
 import webserver.extractor.BodyExtractor;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.function.Function;
 
 public class LoginResponseHandler implements ResponseHandler {
-    private static final Logger log = LoggerFactory.getLogger(LoginResponseHandler.class);
     private final Function<User, String> function;
 
     public LoginResponseHandler(final Function<User, String> function) {
@@ -22,36 +17,16 @@ public class LoginResponseHandler implements ResponseHandler {
 
 
     @Override
-    public void response(final DataOutputStream dos, final String bodyString) throws IOException {
-        User user = BodyExtractor.extract(User.class, bodyString);
+    public void response(final HttpRequest httpRequest, final HttpResponse httpResponse) {
+        User user = BodyExtractor.extract(User.class, httpRequest.getBodyString());
 
         try {
             String response = this.function.apply(user);
-            byte[] body = Files.readAllBytes(new File("./webapp/" + response).toPath());
-            response200Header(dos, body.length);
-            dos.writeBytes("Set-Cookie: logined=true\r\n");
-            dos.writeBytes("\r\n");
-            dos.write(body, 0, body.length);
+            httpResponse.addHeader("Set-Cookie", "logined=true");
+            httpResponse.forward(response);
         } catch (UserNotFoundException e) {
-            byte[] body = Files.readAllBytes(new File("./webapp/user/login_failed.html").toPath());
-            response200Header(dos, body.length);
-            dos.writeBytes("Set-Cookie: logined=false\r\n");
-            dos.writeBytes("\r\n");
-            dos.write(body, 0, body.length);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-
-        dos.flush();
-    }
-
-    private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
-        } catch (IOException e) {
-            log.error(e.getMessage());
+            httpResponse.addHeader("Set-Cookie", "logined=false");
+            httpResponse.forward("/user/login_failed.html");
         }
     }
 }

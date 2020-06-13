@@ -1,6 +1,7 @@
 package http.request;
 
 import com.google.common.base.Strings;
+import http.HttpCookies;
 import webserver.dto.RequestInfo;
 
 import java.io.BufferedReader;
@@ -15,7 +16,7 @@ public class HttpRequest {
     private RequestUri requestUri;
     private RequestHeaders requestHeaders;
     private RequestParams requestParams;
-    private RequestCookies requestCookies;
+    private HttpCookies httpCookies;
     private RequestBody requestBody;
 
     public HttpRequest(final InputStream in) {
@@ -25,9 +26,11 @@ public class HttpRequest {
 
             this.requestUri = new RequestUri(requestUri);
             this.requestHeaders = new RequestHeaders(collectHeaders(br));
-            this.requestCookies = new RequestCookies(requestHeaders.getHeaders());
-            this.requestBody = new RequestBody(this.requestUri, br, this.requestHeaders.getContentLength());
-            this.requestParams = new RequestParams(HttpMethod.valueOf(getMethod()), this.requestUri, this.requestBody.getBody());
+            this.httpCookies = new HttpCookies(requestHeaders.getHeaders());
+            if (this.requestUri.isPost()) {
+                this.requestBody = new RequestBody(br, this.requestHeaders.getContentLength());
+            }
+            this.requestParams = new RequestParams(HttpMethod.valueOf(getMethod()), this.requestUri, this.requestBody);
         } catch (IOException e) {
             e.getStackTrace();
         }
@@ -64,7 +67,10 @@ public class HttpRequest {
     }
 
     public String getCookie(final String key) {
-        return this.requestCookies.get(key);
+        return this.httpCookies.get(key);
     }
 
+    public String getBodyString() {
+        return this.requestBody.getBody();
+    }
 }

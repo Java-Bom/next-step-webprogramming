@@ -7,6 +7,7 @@ import http.request.HttpRequest;
 import webserver.dto.RequestInfo;
 import webserver.extractor.ResourceExtractor;
 import webserver.handler.FileResponseHandler;
+import webserver.handler.IndexResponseHandler;
 import webserver.handler.LoginResponseHandler;
 import webserver.handler.RedirectResponseHandler;
 import webserver.handler.ResponseHandler;
@@ -22,6 +23,7 @@ public class HandlerMapping {
     static {
         RES = new HashMap<>();
         initResource();
+        RES.put(new RequestInfo(HttpMethod.GET, "/", true), new IndexResponseHandler("/index.html"));
         RES.put(new RequestInfo(HttpMethod.POST, "/user/create", true), new RedirectResponseHandler<>(new UserController()::create, User.class));
         RES.put(new RequestInfo(HttpMethod.POST, "/user/login", true), new LoginResponseHandler(new UserController()::login));
         RES.put(new RequestInfo(HttpMethod.GET, "/user/list", false), new UserFindResponseHandler(new UserController()::getUsers));
@@ -37,6 +39,7 @@ public class HandlerMapping {
     public static ResponseHandler find(HttpRequest httpRequest) {
         RequestInfo requestInfo = httpRequest.getRequestInfo();
         String logined = httpRequest.getCookie("logined");
+
         return RES.entrySet().stream()
                 .filter((entry) -> entry.getKey().equals(requestInfo))
                 .filter(entry -> entry.getKey().enableAccess(logined))

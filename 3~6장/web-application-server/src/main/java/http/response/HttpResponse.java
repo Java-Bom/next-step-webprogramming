@@ -1,5 +1,7 @@
 package http.response;
 
+import http.HttpCookies;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +13,7 @@ public class HttpResponse {
     private final DataOutputStream dos;
 
     private final ResponseHeaders responseHeaders;
+    private final HttpCookies httpCookies = new HttpCookies();
 
     public HttpResponse(final OutputStream outputStream) {
         this.dos = new DataOutputStream(outputStream);
@@ -29,6 +32,13 @@ public class HttpResponse {
         }
     }
 
+    public void forwardWithBody(final String response) {
+        byte[] body = response.getBytes();
+        this.responseHeaders.add("Content-Length", body.length + "");
+        this.responseHeaders.response200Header(dos);
+        responseBody(body);
+    }
+
     public void sendRedirect(String url) {
         this.responseHeaders.add("Location", url);
         this.responseHeaders.response302Redirect(dos);
@@ -45,5 +55,9 @@ public class HttpResponse {
 
     public void addHeader(final String key, final String value) {
         this.responseHeaders.add(key, value);
+    }
+
+    public void addCookie(String key, String value) {
+        httpCookies.add(key, value);
     }
 }

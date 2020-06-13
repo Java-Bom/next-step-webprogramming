@@ -4,15 +4,13 @@ import http.request.HttpRequest;
 import http.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.container.RequestContainer;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+
+//import webserver.container.RequestContainer;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -33,13 +31,8 @@ public class RequestHandler extends Thread {
             HttpRequest httpRequest = new HttpRequest(in);
             HttpResponse httpResponse = new HttpResponse(out);
 
-            DataOutputStream dos = new DataOutputStream(out);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            RequestContainer requestContainer = new RequestContainer();
-            requestContainer.extractRequest(br);
-            requestContainer.response(dos);
-
+            HandlerAdapter handlerAdapter = new HandlerAdapter();
+            handlerAdapter.doService(httpRequest, httpResponse);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
