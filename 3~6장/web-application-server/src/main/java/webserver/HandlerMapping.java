@@ -18,10 +18,9 @@ import java.util.Map;
 
 public class HandlerMapping {
 
-    private static final Map<RequestInfo, ResponseHandler> RES;
+    private static final Map<RequestInfo, ResponseHandler> RES = new HashMap<>();
 
     static {
-        RES = new HashMap<>();
         initResource();
         RES.put(new RequestInfo(HttpMethod.GET, "/", true), new IndexResponseHandler("/index.html"));
         RES.put(new RequestInfo(HttpMethod.POST, "/user/create", true), new RedirectResponseHandler<>(new UserController()::create, User.class));

@@ -4,6 +4,7 @@ import http.request.HttpRequest;
 import http.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.handler.ResponseHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,9 @@ public class RequestHandler extends Thread {
             HttpRequest httpRequest = new HttpRequest(in);
             HttpResponse httpResponse = new HttpResponse(out);
 
-            HandlerAdapter handlerAdapter = new HandlerAdapter();
+            ResponseHandler responseHandler = HandlerMapping.find(httpRequest);
+
+            HandlerAdapter handlerAdapter = new HandlerAdapter(responseHandler);
             handlerAdapter.doService(httpRequest, httpResponse);
         } catch (IOException e) {
             log.error(e.getMessage());

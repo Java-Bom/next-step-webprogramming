@@ -7,10 +7,13 @@ import webserver.handler.ResponseHandler;
 import java.io.IOException;
 
 public class HandlerAdapter {
+    private final ResponseHandler responseHandler;
+
+    public HandlerAdapter(final ResponseHandler responseHandler) {
+        this.responseHandler = responseHandler;
+    }
 
     public void doService(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException {
-        ResponseHandler responseHandler = HandlerMapping.find(httpRequest);
-
         responseHandler.response(httpRequest, httpResponse);
     }
 }
