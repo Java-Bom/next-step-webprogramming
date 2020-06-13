@@ -1,9 +1,11 @@
 package webserver.handler;
 
-import java.io.DataOutputStream;
+import http.request.HttpRequest;
+import http.response.HttpResponse;
+
 import java.io.IOException;
 
 public interface ResponseHandler {
 
-    void response(DataOutputStream dos, String bodyString) throws IOException;
+    void response(HttpRequest httpRequest, HttpResponse httpResponse) throws IOException;
 }

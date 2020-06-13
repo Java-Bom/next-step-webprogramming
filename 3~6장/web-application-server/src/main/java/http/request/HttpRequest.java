@@ -1,6 +1,7 @@
 package http.request;
 
 import com.google.common.base.Strings;
+import webserver.dto.RequestInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,10 @@ public class HttpRequest {
             header = br.readLine();
         }
         return headerGroup;
+    }
+
+    public RequestInfo getRequestInfo() {
+        return new RequestInfo(HttpMethod.valueOf(getMethod()), requestUri.getPath());
     }
 
     public String getMethod() {

@@ -1,31 +1,31 @@
 package webserver.dto;
 
-import webserver.container.RequestUriContainer;
+import http.request.HttpMethod;
 
 import java.util.Objects;
 
 public class RequestInfo {
-    private RequestUriContainer.Method method;
+    private HttpMethod method;
     private String url;
     private boolean isDefault = true;
 
-    public RequestInfo(final RequestUriContainer.Method method, final String url) {
+    public RequestInfo(final HttpMethod method, final String url) {
         this.method = method;
         this.url = url;
     }
 
-    public RequestInfo(final RequestUriContainer.Method method, final String url, final boolean isDefault) {
+    public RequestInfo(final HttpMethod method, final String url, final boolean isDefault) {
         this.method = method;
         this.url = url;
         this.isDefault = isDefault;
     }
 
     public boolean isGet() {
-        return this.method == RequestUriContainer.Method.GET;
+        return this.method.isGet();
     }
 
     public boolean isPost() {
-        return this.method == RequestUriContainer.Method.POST;
+        return this.method.isPost();
     }
 
 
