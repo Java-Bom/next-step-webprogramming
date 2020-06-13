@@ -9,6 +9,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by jyami on 2020/04/25
  */
 class RequestStatusLineTest {
+
+    @Test
+
+    void name() {
+
+    }
+
     @DisplayName("statusLine 값 매핑 확인")
     @Test
     void subStringTest() {

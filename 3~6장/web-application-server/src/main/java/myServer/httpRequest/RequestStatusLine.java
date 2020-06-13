@@ -13,7 +13,7 @@ public class RequestStatusLine {
     private static final String REGEX = " ";
     private static final String QUESTION_MARK = "?";
 
-    private String method;
+    private HttpMethod method;
     private String url;
     private String path;
     private String httpVersion;
@@ -21,7 +21,10 @@ public class RequestStatusLine {
 
     public RequestStatusLine(String statusLine) {
         String[] statusGroup = statusLine.split(REGEX);
-        this.method = statusGroup[0];
+        if (statusGroup.length != 3) {
+            throw new IllegalArgumentException(statusLine + "이 형식에 맞지 않습니다.");
+        }
+        this.method = HttpMethod.valueOf(statusGroup[0]);
         this.url = statusGroup[1];
         this.path = this.url;
         this.httpVersion = statusGroup[2];
@@ -31,7 +34,7 @@ public class RequestStatusLine {
         }
     }
 
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
@@ -47,7 +50,9 @@ public class RequestStatusLine {
         return httpVersion;
     }
 
-    public Map<String, String> getParams() {
-        return params;
+    public String getParameter(String string) {
+        return params.get(string);
     }
+
+
 }

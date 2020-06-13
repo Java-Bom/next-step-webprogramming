@@ -14,7 +14,7 @@ import java.util.Map;
 @Slf4j
 public class HttpResponseEntity {
 
-    private static final String LINE_SEPERATOR = "\r\n";
+    private static final String LINE_SEPARATOR = "\r\n";
 
     private DataOutputStream dos;
     private ResponseStatusLine responseStatusLine = ResponseStatusLine.create(ResponseStatusLine.HttpStatus.OK);
@@ -30,7 +30,7 @@ public class HttpResponseEntity {
 
     public void forward(String bodyContentsUrl) {
         try {
-            forwardBody(bodyContentsUrl);
+            getFileBody(bodyContentsUrl);
             response200Header(bodyContentsUrl);
             statusLineProcess();
             headerProcess();
@@ -39,6 +39,20 @@ public class HttpResponseEntity {
             log.error(e.getMessage());
         }
     }
+
+
+    public void forwardBody(String bodyContent) {
+        body = bodyContent.getBytes();
+        try {
+            response200Header("");
+            statusLineProcess();
+            headerProcess();
+            bodyProcess();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
 
     public void sendRedirect(String redirectUrl) {
         try {
@@ -56,7 +70,7 @@ public class HttpResponseEntity {
 
     private void response200Header(String contentsBodyUrl) {
         responseStatusLine = ResponseStatusLine.create(ResponseStatusLine.HttpStatus.OK);
-        addHeader("Content-Type", "text/" + contentsType(contentsBodyUrl) + ";charset=utf-8");
+        addHeader("Content-Type", getHeaderContentType(contentsBodyUrl));
         addHeader("Content-Length", "" + body.length);
     }
 
@@ -65,17 +79,26 @@ public class HttpResponseEntity {
         addHeader("Location", redirectUrl);
     }
 
-    private void forwardBody(String bodyContents) throws IOException {
+    private String getHeaderContentType(String contentsBodyUrl) {
+        if (contentsBodyUrl.endsWith(".css"))
+            return "text/css";
+        else if (contentsBodyUrl.endsWith(".js"))
+            return "application/javascript";
+        else
+            return "text/html;charset=utf-8";
+    }
+
+    private void getFileBody(String bodyContents) throws IOException {
         body = Files.readAllBytes(new File("./webapp" + bodyContents).toPath());
     }
 
     private void statusLineProcess() throws IOException {
-        dos.writeBytes(responseStatusLine.transferStatusFormat() + LINE_SEPERATOR);
+        dos.writeBytes(responseStatusLine.transferStatusFormat() + LINE_SEPARATOR);
     }
 
     private void headerProcess() throws IOException {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            String headerString = String.format("%s: %s " + LINE_SEPERATOR, entry.getKey(), entry.getValue());
+            String headerString = String.format("%s: %s " + LINE_SEPARATOR, entry.getKey(), entry.getValue());
             dos.writeBytes(headerString);
         }
         dos.writeBytes("\r\n");
@@ -84,10 +107,5 @@ public class HttpResponseEntity {
     private void bodyProcess() throws IOException {
         dos.write(body, 0, body.length);
         dos.flush();
-    }
-
-    private static String contentsType(String contentsBodyUrl) {
-        int extensionIndex = contentsBodyUrl.lastIndexOf(".");
-        return contentsBodyUrl.substring(extensionIndex + 1);
     }
 }
