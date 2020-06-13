@@ -1,7 +1,7 @@
 package db;
 
 import com.google.common.collect.Maps;
-import model.User;
+import domain.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

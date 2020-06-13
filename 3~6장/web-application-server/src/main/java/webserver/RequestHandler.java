@@ -1,7 +1,10 @@
 package webserver;
 
+import http.request.HttpRequest;
+import http.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webserver.container.RequestContainer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -27,6 +30,9 @@ public class RequestHandler extends Thread {
         try (InputStream in = connection.getInputStream();
              OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
+            HttpRequest httpRequest = new HttpRequest(in);
+            HttpResponse httpResponse = new HttpResponse(out);
+
             DataOutputStream dos = new DataOutputStream(out);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 

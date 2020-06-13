@@ -1,4 +1,4 @@
-package exception;
+package webserver.exception;
 
 public class UserNotFoundException extends RuntimeException {
 

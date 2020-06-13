@@ -1,4 +1,6 @@
-package webserver;
+package webserver.dto;
+
+import webserver.container.RequestUriContainer;
 
 import java.util.Objects;
 
