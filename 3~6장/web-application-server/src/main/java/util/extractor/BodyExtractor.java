@@ -1,4 +1,4 @@
-package webserver.extractor;
+package util.extractor;
 
 import util.HttpRequestUtils;
 

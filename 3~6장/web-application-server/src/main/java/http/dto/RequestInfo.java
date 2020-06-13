@@ -1,6 +1,6 @@
-package webserver.dto;
+package http.dto;
 
-import webserver.container.RequestUriContainer;
+import http.RequestUriContainer;
 
 import java.util.Objects;
 

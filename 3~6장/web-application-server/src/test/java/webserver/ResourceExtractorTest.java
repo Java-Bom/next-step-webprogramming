@@ -1,7 +1,7 @@
 package webserver;
 
 import org.junit.jupiter.api.Test;
-import webserver.extractor.ResourceExtractor;
+import util.extractor.ResourceExtractor;
 
 class ResourceExtractorTest {
 

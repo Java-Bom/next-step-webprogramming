@@ -1,6 +1,7 @@
-package webserver.container;
+package http;
 
 import util.HttpRequestUtils;
+import http.dto.RequestInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,5 +46,9 @@ public class HttpHeaderContainer {
                 .findFirst()
                 .orElseThrow(RuntimeException::new)
                 .getValue());
+    }
+
+    public boolean logined(RequestInfo requestInfo) {
+        return requestInfo.enableAccess(getLogined());
     }
 }

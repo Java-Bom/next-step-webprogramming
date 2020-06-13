@@ -1,4 +1,4 @@
-package webserver.dto;
+package http.dto;
 
 import util.HttpRequestUtils;
 
