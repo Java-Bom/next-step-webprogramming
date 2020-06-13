@@ -1,0 +1,5 @@
+GET /user/create?userId=javajigi&password=password2&name=aaa HTTP/1.1
+Host: localhost
+Accept: */*
+Connection: keep-alive
+

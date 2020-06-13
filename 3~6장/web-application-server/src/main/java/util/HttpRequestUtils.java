@@ -2,6 +2,7 @@ package util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -12,28 +13,20 @@ public class HttpRequestUtils {
     private static final String REQUEST_DELIMITER = " ";
 
     /**
-     * @param getRequest Get /index.html HTTP/1.1 과 같이 한줄로 들어오는 Request 첫번째 라인
-     *                   /user/create/?userId=abc 와 같이 들어오는 경우 ? 를 기준으로 앞의 url만 추출
+     * @param requestFirstLine Get /index.html HTTP/1.1 과 같이 한줄로 들어오는 Request 첫번째 라인
+     *                         urlpath추출하여 반환
      * @return URL 위에서 /index.html 만 추출하여 return
      */
-    public static String extractUrlPath(String getRequest) {
-        String url = getRequest.split(REQUEST_DELIMITER)[1];
-        if (url.contains("?")) {
-            return url.substring(0, url.indexOf("?"));
-        }
-        return url;
+    public static String extractUrlPath(final String requestFirstLine) {
+        return requestFirstLine.split(REQUEST_DELIMITER)[1];
     }
 
     /**
-     * @param getRequest
-     * @return ?query 부분만 출력
+     * @param requestFirstLine Get /index.html HTTP/1.1 에서 GET만 추출
+     * @return HttpMethod
      */
-    public static String extractUrlQuery(String getRequest) {
-        String url = getRequest.split(REQUEST_DELIMITER)[1];
-        if (!url.contains("?")) {
-            throw new IllegalArgumentException("파라미터가 존재하지 않습니다.");
-        }
-        return url.substring(url.indexOf("?") + 1);
+    public static HttpMethod extractHttpMethod(final String requestFirstLine) {
+        return HttpMethod.findByKeyword(requestFirstLine.split(REQUEST_DELIMITER)[0]);
     }
 
     /**
