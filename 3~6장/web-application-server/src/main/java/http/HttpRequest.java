@@ -1,6 +1,5 @@
 package http;
 
-import util.HttpRequestUtils;
 import util.IOUtils;
 
 import java.io.BufferedReader;
@@ -12,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpRequest {
-    private final HttpMethod httpMethod;
-    private final String path;
+    private final HttpRequestLine httpRequestLine;
     private final HttpHeaders httpHeaders;
     private final HttpQueryParameters queryParameters;
     private final HttpBody httpBody;
@@ -22,9 +20,8 @@ public class HttpRequest {
     public HttpRequest(final InputStream in) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         String line = br.readLine();
-        this.httpMethod = HttpRequestUtils.extractHttpMethod(line);
-        this.path = HttpRequestUtils.extractUrlPath(line);
-        this.queryParameters = new HttpQueryParameters(this.path);
+        this.httpRequestLine = new HttpRequestLine(line);
+        this.queryParameters = new HttpQueryParameters(this.httpRequestLine.getPath());
         this.httpHeaders = new HttpHeaders(toHttpHeaderStrings(br));
         this.httpBody = new HttpBody(IOUtils.readData(br, this.httpHeaders.getHeader(HttpHeader.CONTENT_LENGTH)));
     }
@@ -39,8 +36,8 @@ public class HttpRequest {
         return headerStr;
     }
 
-    public HttpMethod getHttpMethod() {
-        return httpMethod;
+    public HttpRequestLine getHttpRequestLine() {
+        return httpRequestLine;
     }
 
     public Object getHeader(final HttpHeader httpHeader) {
@@ -53,10 +50,6 @@ public class HttpRequest {
 
     public Object getParameter(final String key) {
         return this.httpBody.getParameter(key);
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public HttpBody getHttpBody() {
