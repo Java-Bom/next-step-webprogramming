@@ -1,5 +1,6 @@
-package http;
+package http.request;
 
+import http.HttpMethod;
 import util.HttpRequestUtils;
 
 public class HttpRequestLine {

@@ -1,4 +1,4 @@
-package http;
+package http.response;
 
 public enum ResponseCode {
     SUCCESS(200, "OK");

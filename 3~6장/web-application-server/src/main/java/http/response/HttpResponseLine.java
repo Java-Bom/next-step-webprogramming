@@ -1,4 +1,4 @@
-package http;
+package http.response;
 
 public enum HttpResponseLine {
     HTTP_SUCCESS("HTTP/1.1 200 OK \n"),

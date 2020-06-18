@@ -1,5 +1,8 @@
-package http;
+package http.request;
 
+import http.HttpBody;
+import http.HttpHeader;
+import http.HttpHeaders;
 import util.IOUtils;
 
 import java.io.BufferedReader;
@@ -23,7 +26,7 @@ public class HttpRequest {
         BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         String line = br.readLine();
         if (line == null) {
-            throw new IllegalArgumentException("null요청은 HttpRequest가 될 수 없습니다");
+            throw new IllegalArgumentException("null 요청은 HttpRequest가 될 수 없습니다");
         }
         this.httpRequestLine = new HttpRequestLine(line);
         this.queryParameters = new HttpQueryParameters(this.httpRequestLine.getPath());
