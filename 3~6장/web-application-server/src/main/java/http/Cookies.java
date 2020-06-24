@@ -9,4 +9,8 @@ public class Cookies {
     public void addCookies(final Map<String, String> cookies) {
         this.cookies.putAll(cookies);
     }
+
+    public Object getCookie(final String key) {
+        return cookies.get(key);
+    }
 }

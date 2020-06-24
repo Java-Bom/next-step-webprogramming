@@ -6,7 +6,6 @@ public enum HttpHeader {
     HOST("Host"), CONNECTION("Connection"), ACCEPT("Accept"), CONTENT_LENGTH("Content-Length"),
     CONTENT_TYPE("Content-Type"), COOKIE("Cookie"), SET_COOKIE("Set-Cookie"), NONE("NONE");
 
-    private static final String VALUE_DELIMITER = ":";
     private final String name;
 
     HttpHeader(final String name) {

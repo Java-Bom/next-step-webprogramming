@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static http.HttpHeader.COOKIE;
+
 public class HttpHeaders {
     private static final String HTTP_HEADER_DELIMITER = ":";
 
@@ -22,7 +24,7 @@ public class HttpHeaders {
             return;
         }
         HttpHeader httpHeader = HttpHeader.findByRequest(optimizeHeader);
-        if (httpHeader == HttpHeader.COOKIE) {
+        if (httpHeader == COOKIE) {
             this.cookies.addCookies(HttpRequestUtils.parseCookies(parseValue(headerStr)));
             return;
         }
@@ -35,5 +37,13 @@ public class HttpHeaders {
 
     public String getHeader(final HttpHeader key) {
         return headers.get(key);
+    }
+
+    public Cookies getCookies() {
+        return cookies;
+    }
+
+    public Object getCookie(final String key) {
+        return cookies.getCookie(key);
     }
 }

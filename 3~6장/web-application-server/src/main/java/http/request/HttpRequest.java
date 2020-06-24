@@ -53,6 +53,10 @@ public class HttpRequest {
         return this.httpHeaders.getHeader(httpHeader);
     }
 
+    public Object getCookie(final String key) {
+        return this.httpHeaders.getCookie(key);
+    }
+
     public String getQueryParameter(final String key) {
         return this.queryParameters.getQueryParam(key);
     }
