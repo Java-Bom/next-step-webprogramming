@@ -1,6 +1,8 @@
 package http.response;
 
 import http.ContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class HttpResponse {
+    private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
     private final DataOutputStream dos;
     private final Map<String, String> header = new HashMap<>();
 
@@ -20,14 +23,18 @@ public class HttpResponse {
     }
 
     public void forward(final String url) throws IOException {
+        log.info("forword: {}", url);
         byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
-        header.put("Content-Type", ContentType.findMarkByUrl(url));
+        String markByUrl = ContentType.findMarkByUrl(url);
+        log.info("mark: {}", markByUrl);
+        header.put("Content-Type", markByUrl);
         header.put("Content-Length", body.length + "");
         response200Header();
         responseBody(body);
     }
 
     public void forwardBody(final String body) throws IOException {
+        log.info("forwardBody: {}", body);
         byte[] contents = body.getBytes();
         header.put("Content-Type", ContentType.HTML.getValue());
         header.put("Content-Length", contents.length + "");
@@ -49,6 +56,7 @@ public class HttpResponse {
 
 
     public void sendRedirect(final String redirectUrl) throws IOException {
+        log.info("redirect: {}", redirectUrl);
         dos.writeBytes(HttpResponseLine.HTTP_REDIRECT.getDoc());
         processHeaders();
         dos.writeBytes("Location: " + redirectUrl + " \r\n");
