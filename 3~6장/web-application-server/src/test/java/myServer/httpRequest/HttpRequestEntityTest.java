@@ -26,7 +26,7 @@ class HttpRequestEntityTest {
         assertThat(statusLine.getMethod()).isEqualTo("GET");
         assertThat(statusLine.getPath()).isEqualTo("/user/create");
         assertThat(requestEntity.getConnection()).isEqualTo("keep-alive");
-        assertThat(statusLine.getParams().get("userId")).isEqualTo("javabom");
+        assertThat(statusLine.getParameter("userId")).isEqualTo("javabom");
     }
 
     @Test

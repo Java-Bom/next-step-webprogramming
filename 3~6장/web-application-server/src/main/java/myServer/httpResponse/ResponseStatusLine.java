@@ -1,7 +1,5 @@
 package myServer.httpResponse;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 /**
  * Created by jyami on 2020/05/30
@@ -33,22 +31,8 @@ public class ResponseStatusLine {
             throw new IllegalArgumentException("존재하지 않은 HTTP 버전입니다. - " + httpVersion);
         }
     }
-
-    enum HttpStatus {
-        OK(200, "OK"),
-        FOUND(302, "Found");
-
-        private int statusCode;
-        private String statusMessage;
-
-        HttpStatus(int statusCode, String statusMessage) {
-            this.statusCode = statusCode;
-            this.statusMessage = statusMessage;
-        }
-    }
-
     public String transferStatusFormat() {
-        return String.format("%s %s %s", httpVersion, httpStatus.statusCode, httpStatus.statusMessage);
+        return String.format("%s %s %s", httpVersion, httpStatus.getStatusCode(), httpStatus.getStatusMessage());
     }
 
 

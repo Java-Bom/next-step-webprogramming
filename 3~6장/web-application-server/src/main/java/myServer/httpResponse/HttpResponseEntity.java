@@ -17,7 +17,7 @@ public class HttpResponseEntity {
     private static final String LINE_SEPARATOR = "\r\n";
 
     private DataOutputStream dos;
-    private ResponseStatusLine responseStatusLine = ResponseStatusLine.create(ResponseStatusLine.HttpStatus.OK);
+    private ResponseStatusLine responseStatusLine = ResponseStatusLine.create(HttpStatus.OK);
     private Map<String, String> headers = new HashMap<>();
     private byte[] body = new byte[0];
 
@@ -69,13 +69,13 @@ public class HttpResponseEntity {
     }
 
     private void response200Header(String contentsBodyUrl) {
-        responseStatusLine = ResponseStatusLine.create(ResponseStatusLine.HttpStatus.OK);
+        responseStatusLine = ResponseStatusLine.create(HttpStatus.OK);
         addHeader("Content-Type", getHeaderContentType(contentsBodyUrl));
         addHeader("Content-Length", "" + body.length);
     }
 
     private void response302Header(String redirectUrl) {
-        responseStatusLine = ResponseStatusLine.create(ResponseStatusLine.HttpStatus.FOUND);
+        responseStatusLine = ResponseStatusLine.create(HttpStatus.FOUND);
         addHeader("Location", redirectUrl);
     }
 

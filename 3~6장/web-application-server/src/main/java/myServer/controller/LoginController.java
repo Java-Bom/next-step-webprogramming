@@ -4,7 +4,6 @@ import db.DataBase;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import myServer.httpRequest.HttpRequestEntity;
-import myServer.httpRequest.RequestStatusLine;
 import myServer.httpResponse.HttpResponseEntity;
 
 /**
