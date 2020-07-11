@@ -11,7 +11,6 @@ import java.nio.file.Files;
 public class HttpResponse {
 
     private final DataOutputStream dos;
-
     private final ResponseHeaders responseHeaders;
     private final HttpCookies httpCookies = new HttpCookies();
 

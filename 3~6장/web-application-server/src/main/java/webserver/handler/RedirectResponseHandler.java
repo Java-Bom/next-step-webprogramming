@@ -20,6 +20,6 @@ public class RedirectResponseHandler<T> implements ResponseHandler {
         T extract = BodyExtractor.extract(requestType, httpRequest.getBodyString());
         String response = this.function.apply(extract);
 
-        httpResponse.sendRedirect("http://localhost:8080/" + response);
+        httpResponse.sendRedirect("/" + response);
     }
 }

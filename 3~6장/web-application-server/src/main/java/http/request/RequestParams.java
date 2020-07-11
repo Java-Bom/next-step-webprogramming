@@ -11,7 +11,6 @@ public class RequestParams {
     public RequestParams(final HttpMethod method, final RequestUri requestUri, final RequestBody requestBody) {
         if (method.isPost()) {
             this.params = HttpRequestUtils.parseQueryString(requestBody.getBody());
-            return;
         }
         requestUri.getQueryParams()
                 .ifPresent(params -> this.params.putAll(HttpRequestUtils.parseQueryString(params)));
