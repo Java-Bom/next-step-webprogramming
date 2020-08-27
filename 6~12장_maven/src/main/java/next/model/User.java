@@ -82,4 +82,7 @@ public class User {
         return true;
     }
 
+    public boolean isSameUser(User userFromSession) {
+        return userId.equals(userFromSession.userId);
+    }
 }
