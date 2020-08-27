@@ -67,10 +67,10 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index.html">Posts</a></li>
                 <%
-                    if (request.getSession().getAttribute("user") != null) {
+                    if (CurrentUserChecker.getCurrentUser(request).isPresent()) {
                 %>
                 <li><a href="/user/logout" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li><a href="/user/update" role="button">개인정보수정</a></li>
                 <%} else {%>
                 <li><a href="/user/login" role="button">로그인</a></li>
                 <li><a href="/user/create" role="button">회원가입</a></li>
@@ -106,7 +106,7 @@
                     </td>
                     <td><%=user.getEmail()%>
                     </td>
-                    <td><a href="/user/update/<%=user.getUserId()%>" class="btn btn-success" role="button">수정</a>
+                    <td><a href="/user/update" class="btn btn-success" role="button">수정</a>
                     </td>
                 </tr>
                 <%}%>
