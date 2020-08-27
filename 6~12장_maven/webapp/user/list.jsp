@@ -66,10 +66,15 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index.html">Posts</a></li>
-                <li><a href="login.jsp" role="button">로그인</a></li>
-                <li><a href="form.jsp" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
+                <%
+                    if (request.getSession().getAttribute("user") != null) {
+                %>
+                <li><a href="/user/logout" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
+                <%} else {%>
+                <li><a href="/user/login" role="button">로그인</a></li>
+                <li><a href="/user/create" role="button">회원가입</a></li>
+                <%}%>
             </ul>
         </div>
     </div>
@@ -95,9 +100,12 @@
                 %>
                 <tr>
                     <th scope="row">${status.count}</th>
-                    <td><%=user.getUserId()%></td>
-                    <td><%=user.getName()%></td>
-                    <td><%=user.getEmail()%></td>
+                    <td><%=user.getUserId()%>
+                    </td>
+                    <td><%=user.getName()%>
+                    </td>
+                    <td><%=user.getEmail()%>
+                    </td>
                     <td><a href="/user/update/<%=user.getUserId()%>" class="btn btn-success" role="button">수정</a>
                     </td>
                 </tr>
