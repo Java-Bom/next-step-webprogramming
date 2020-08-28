@@ -1,5 +1,7 @@
 package next.model;
 
+import org.springframework.util.StringUtils;
+
 public class User {
     private String userId;
     private String password;
@@ -27,6 +29,18 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void update(final String email, final String name, final String password) {
+        if (StringUtils.hasText(email)) {
+            this.email = email;
+        }
+        if (StringUtils.hasText(name)) {
+            this.name = name;
+        }
+        if (StringUtils.hasText(password)) {
+            this.password = password;
+        }
     }
 
     @Override
@@ -65,5 +79,4 @@ public class User {
             return false;
         return true;
     }
-
 }
