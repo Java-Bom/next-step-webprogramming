@@ -43,6 +43,12 @@ public class User {
         }
     }
 
+    public void checkPassword(final String password) {
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("password가 다르다.");
+        }
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
