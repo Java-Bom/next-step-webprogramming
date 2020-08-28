@@ -111,3 +111,24 @@ HomeController가 아닌 index.jsp 로 요청이 간다. (path가 없는 경우 
 각 컨트롤러의 앞에 모든 요청을 받아 각 컨트롤러에 작업을 위임하는 방식으로 구현
 
 >  requestMapper 로 해당하는 컨트롤러를 찾은 후 그 컨트롤러에 작업을 위임했음
+
+
+
+### ServletContextListener
+
+``contextInitialized()`` : 초기화 작업 수행
+
+- ContextLoaderListener가 ServletContextListener 인터페이스를 구현하고 있으며 @WebListener 애노테이션 설정이 있기 때문
+- 서블릿 컨테이너를 시작하는 과정에서 contextInitilized() 메서드를 호출해 초기화 작업을 한다.
+- 서블릿 초기화보다 ServletContextListener에 대한 초기화가 먼저 진행된다.
+
+
+
+### Dao
+
+Data Access Object
+
+데이터베이스에 대한 접근 로직 처리를 담당하는 객체를 별도 분리
+
+
+
