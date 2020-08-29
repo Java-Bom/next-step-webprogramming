@@ -34,7 +34,8 @@
                     </td>
                     <td><%=user.getEmail()%>
                     </td>
-                    <td><a href="/user/update?userId=<%=user.getUserId()%>" class="btn btn-success" role="button">수정</a>
+                    <td><a href="/users/update?userId=<%=user.getUserId()%>" class="btn btn-success"
+                           role="button">수정</a>
                     </td>
                 </tr>
                 <%}%>

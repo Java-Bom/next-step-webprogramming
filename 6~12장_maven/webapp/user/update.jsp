@@ -10,7 +10,7 @@
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default content-main">
-            <form name="question" method="post" action="/user/update">
+            <form name="question" method="post" action="/users/update">
                 <%
                     User user = (User) request.getAttribute("user");
                 %>

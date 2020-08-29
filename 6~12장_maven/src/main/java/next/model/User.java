@@ -31,10 +31,7 @@ public class User {
         return email;
     }
 
-    public void update(final String userId, final String email, final String name, final String password) {
-        if (isNotAuthenticate(userId)) {
-            throw new IllegalArgumentException("수정 권한 없음.");
-        }
+    public void update(final String email, final String name, final String password) {
         if (StringUtils.hasText(email)) {
             this.email = email;
         }
