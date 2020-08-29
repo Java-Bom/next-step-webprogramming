@@ -142,6 +142,15 @@ Data Access Object
 3. JdbcTemplate과 UserDao 사이 의존 관계를 끊는다. 
 4. InsertJdbcTempate, UpdateJdbcTemplate의 공통부분을 합친다.
 5. JdbcTemplate의 User와의 의존관계를 끊는다.
+6. SelectJdbcTemplate 을 생성해 반복 코드를 분리한다.
+   - query, queryForObject, setValues, mapRow
+7. JdbcTemplate으로 합친다.
+8. 문제점(setValues, maprow 두 메서드를 분리해 독립적으로 전달) -> 인터페이스로 분리
+9. SQLException을 RuntimeException으로 분리한다
+10. try-with-resource 문을 사용하여 close() 메서드를 사용하지 않고 해결한다.
+11. 캐스팅 하지 않도록 로타입에서 제네릭으로 변환한다
+12. 쿼리 전달 인자를 가변인자를 이용하여 변경한다
+13. 람다식으로 interface 구현을 변경한다. 
 
 
 
