@@ -12,29 +12,29 @@ import java.util.List;
 /**
  * Created by jyami on 2020/08/29
  */
-public abstract class JdbcTemplate {
+public class JdbcTemplate {
 
-    public void update(String sql) throws SQLException {
+    public void update(String sql, PreparedStatementSetter pss) throws SQLException {
         try (Connection con = ConnectionManager.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
-            setValues(pstmt);
+            pss.setValues(pstmt);
             pstmt.executeUpdate();
         }
     }
 
     @SuppressWarnings("rawtypes")
-    public List query(String sql) throws SQLException {
+    public List query(String sql, PreparedStatementSetter pss, RowMapper rowMapper) throws SQLException {
 
         ResultSet rs = null;
         try (Connection con = ConnectionManager.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) { // TODO:// ResultSet try-resource 가능한지 확인
 
-            setValues(pstmt);
+            pss.setValues(pstmt);
             rs = pstmt.executeQuery();
             List<Object> users = new ArrayList<>();
 
             while (rs.next()) {
-                users.add(mapRow(rs));
+                users.add(rowMapper.mapRow(rs));
             }
 
             return users;
@@ -46,15 +46,12 @@ public abstract class JdbcTemplate {
     }
 
     @SuppressWarnings("rawtypes")
-    public Object queryForObject(String sql) throws SQLException {
-        List result = query(sql);
+    public Object queryForObject(String sql, PreparedStatementSetter pss, RowMapper rowMapper) throws SQLException {
+        List result = query(sql, pss, rowMapper);
         if (result.isEmpty()) {
             return null;
         }
         return result.get(0);
     }
 
-    abstract void setValues(PreparedStatement pstmt) throws SQLException;
-
-    abstract Object mapRow(ResultSet rs) throws SQLException;
 }
