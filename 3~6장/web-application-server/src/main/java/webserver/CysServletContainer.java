@@ -36,11 +36,11 @@ public class CysServletContainer {
     }
 
     private Controller findHandler(CysHttpRequest cysHttpRequest) {
-        RequestInfo requestInfo = cysHttpRequest.getinfo();
+        RequestInfo requestInfo = cysHttpRequest.getInfo();
 
         return RES.entrySet().stream()
                 .filter((entry) -> entry.getKey().equals(requestInfo))
-                .filter(entry -> cysHttpRequest.enableAccess(entry.getKey()))
+                .filter(entry -> cysHttpRequest.enableAccessWithCookie(entry.getKey()))
                 .findFirst()
                 .orElseThrow(RuntimeException::new)
                 .getValue();

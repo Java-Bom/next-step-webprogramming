@@ -2,11 +2,12 @@ package controller;
 
 import db.DataBase;
 import domain.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import exception.UserNotFoundException;
 import http.CysHttpRequest;
 import http.CysHttpResponse;
-import exception.UserNotFoundException;
+import http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import util.extractor.BodyExtractor;
 
 import java.io.IOException;
@@ -19,15 +20,17 @@ public class LoginController implements Controller {
     @Override
     public void service(CysHttpRequest httpRequest, CysHttpResponse httpResponse) throws IOException {
         User user = BodyExtractor.extract(User.class, httpRequest.getBodyString());
-        String response = login(user);
+        HttpSession session = httpRequest.getSession();
+        String response = login(session, user);
         httpResponse.response(response);
     }
 
-    private String login(User user) {
+    private String login(HttpSession session, User user) {
         User userById = DataBase.findUserById(user.getUserId());
         if (Objects.isNull(userById)) {
             throw new UserNotFoundException();
         }
+        session.setAttribute("user", userById);
         return "index.html";
     }
 

@@ -1,7 +1,8 @@
 package http;
 
-import util.HttpRequestUtils;
+import domain.model.User;
 import http.dto.RequestInfo;
+import util.HttpRequestUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,11 +34,10 @@ public class HttpHeaderContainer {
                 .getValue();
     }
 
-    public String getLogined() {
-        if (this.cookies.get("logined") == null) {
-            return "false";
-        }
-        return "true";
+
+    public User getLoginedUser() {
+        HttpSession session = HttpSessionContainer.getSession(getSessionId());
+        return (User) session.getAttribute("user");
     }
 
     public int getContentLength() {
@@ -49,6 +49,10 @@ public class HttpHeaderContainer {
     }
 
     public boolean logined(RequestInfo requestInfo) {
-        return requestInfo.enableAccess(getLogined());
+        return requestInfo.enableAccess(getLoginedUser());
+    }
+
+    public String getSessionId() {
+        return cookies.get("JESSIONID");
     }
 }

@@ -1,9 +1,9 @@
 package webserver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import http.CysHttpRequest;
 import http.CysHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +29,12 @@ public class RequestHandler extends Thread {
             CysHttpRequest cysHttpRequest = new CysHttpRequest(in);
             CysHttpResponse cysHttpResponse = new CysHttpResponse(out);
 
+            if (!cysHttpRequest.hasSessionId()) {
+                cysHttpResponse.initSessionId();
+            }
+
             CysServletContainer cysServletContainer = new CysServletContainer();
-            cysServletContainer.run(cysHttpRequest,cysHttpResponse);
+            cysServletContainer.run(cysHttpRequest, cysHttpResponse);
         } catch (IOException e) {
             log.error(e.getMessage());
         }

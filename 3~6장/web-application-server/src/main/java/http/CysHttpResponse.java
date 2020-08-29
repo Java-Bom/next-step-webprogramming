@@ -1,26 +1,28 @@
 package http;
 
+import exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import exception.UserNotFoundException;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.UUID;
 
 public class CysHttpResponse {
     private static final Logger log = LoggerFactory.getLogger(CysHttpResponse.class);
 
     private DataOutputStream dos;
+    private HttpSession httpSession;
 
     public CysHttpResponse(OutputStream out) {
         this.dos = new DataOutputStream(out);
     }
 
     public void response200Header(byte[] body) {
-        response200Header(body,"html");
+        response200Header(body, "html");
     }
 
     public void responseRedirect(final String page) {
@@ -59,6 +61,9 @@ public class CysHttpResponse {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/" + extension + ";charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + body.length + "\r\n");
+            if (httpSession != null) {
+                dos.writeBytes("JESSIONID:" + httpSession.getId() + "\r\n");
+            }
             dos.writeBytes("\r\n");
             dos.write(body, 0, body.length);
             dos.writeBytes("\r\n");
@@ -66,5 +71,9 @@ public class CysHttpResponse {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    public void initSessionId() {
+        httpSession = HttpSessionContainer.getSession(String.valueOf(UUID.randomUUID()));
     }
 }

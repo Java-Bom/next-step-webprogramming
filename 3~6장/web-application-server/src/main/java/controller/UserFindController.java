@@ -12,7 +12,12 @@ public class UserFindController implements Controller {
 
     @Override
     public void service(CysHttpRequest httpRequest, CysHttpResponse httpResponse) throws IOException {
+        if (httpRequest.getSession().getAttribute("user") == null) {
+            httpResponse.responseRedirect("index.html");
+            return;
+        }
         String responseText = getUsers();
+
         byte[] body = responseText.getBytes();
         httpResponse.response200Header(body);
     }

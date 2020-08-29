@@ -1,5 +1,6 @@
 package http.dto;
 
+import domain.model.User;
 import http.RequestUriContainer;
 
 import java.util.Objects;
@@ -50,5 +51,13 @@ public class RequestInfo {
         }
 
         return "true".equals(logined);
+    }
+
+    public boolean enableAccess(User user) {
+        if (isDefault) {
+            return true;
+        }
+
+        return user != null;
     }
 }

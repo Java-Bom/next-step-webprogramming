@@ -1,9 +1,12 @@
 package http;
 
-import util.IOUtils;
 import http.dto.RequestInfo;
+import util.IOUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class CysHttpRequest {
 
@@ -26,18 +29,29 @@ public class CysHttpRequest {
         }
     }
 
-    public RequestInfo getinfo(){
+    public RequestInfo getInfo() {
         RequestUriContainer.Method method = this.uriContainer.getMethod();
         String url = this.uriContainer.getUrl();
         return new RequestInfo(method, url);
     }
 
-    public boolean enableAccess(RequestInfo requestInfo){
+    public boolean enableAccess(RequestInfo requestInfo) {
         return this.headerContainer.logined(requestInfo);
     }
 
+    public boolean enableAccessWithCookie(RequestInfo requestInfo) {
+        return this.headerContainer.logined(requestInfo);
+    }
 
-    public String getBodyString(){
+    public String getBodyString() {
         return this.bodyString;
+    }
+
+    public boolean hasSessionId() {
+        return headerContainer.getSessionId() != null;
+    }
+
+    public HttpSession getSession() {
+        return HttpSessionContainer.getSession(headerContainer.getSessionId());
     }
 }
