@@ -11,7 +11,7 @@ $(document).ready(function () {/* jQuery toggle layout */
 });
 
 function logout() {
-    fetch("/user/logout", {
+    fetch("/users/logout", {
         method: "DELETE"
     })
         .finally(() => {

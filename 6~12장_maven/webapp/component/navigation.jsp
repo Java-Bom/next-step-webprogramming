@@ -26,7 +26,7 @@
                 <li><a href="javascript:void(0);" onclick="logout(); return false;" role="button">로그아웃</a></li>
                 <li><a href="../users/profile" role="button">개인정보수정</a></li>
                 <%} else {%>
-                <li><a href="../users/login" role="button">로그인</a></li>
+                <li><a href="../users/login-form" role="button">로그인</a></li>
                 <li><a href="../users/form" role="button">회원가입</a></li>
                 <%}%>
             </ul>
