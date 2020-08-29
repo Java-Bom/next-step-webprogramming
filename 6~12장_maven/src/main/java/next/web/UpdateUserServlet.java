@@ -2,6 +2,7 @@ package next.web;
 
 import core.db.DataBase;
 import next.model.User;
+import next.user.SessionUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +30,12 @@ public class UpdateUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        SessionUser sessionUser = (SessionUser) req.getSession().getAttribute("user");
         User user = new User(req.getParameter("userId"), req.getParameter("password"), req.getParameter("name"),
                 req.getParameter("email"));
         log.debug("user : {}", user);
-        User findUser = DataBase.findUserById(user.getUserId());
-        findUser.update(user.getEmail(), user.getName(), user.getPassword());
+        User findUser = DataBase.findUserById(sessionUser.getUserId());
+        findUser.update(user.getUserId(), user.getEmail(), user.getName(), user.getPassword());
         DataBase.updateUser(findUser);
         resp.sendRedirect("/user/list");
     }

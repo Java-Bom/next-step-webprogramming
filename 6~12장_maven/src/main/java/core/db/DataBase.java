@@ -11,6 +11,7 @@ public class DataBase {
 
     static {
         users.put("test", new User("test", "a", "a", "test@test"));
+        users.put("a", new User("a", "a", "a", "a@a"));
     }
 
     public static void addUser(User user) {

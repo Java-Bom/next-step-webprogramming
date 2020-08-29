@@ -31,7 +31,10 @@ public class User {
         return email;
     }
 
-    public void update(final String email, final String name, final String password) {
+    public void update(final String userId, final String email, final String name, final String password) {
+        if (isNotAuthenticate(userId)) {
+            throw new IllegalArgumentException("수정 권한 없음.");
+        }
         if (StringUtils.hasText(email)) {
             this.email = email;
         }
@@ -41,6 +44,10 @@ public class User {
         if (StringUtils.hasText(password)) {
             this.password = password;
         }
+    }
+
+    private boolean isNotAuthenticate(final String userId) {
+        return !this.userId.equals(userId);
     }
 
     public void checkPassword(final String password) {
