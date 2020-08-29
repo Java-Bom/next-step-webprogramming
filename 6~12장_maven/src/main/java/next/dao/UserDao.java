@@ -1,12 +1,14 @@
 package next.dao;
 
+import core.jdbc.ConnectionManager;
+import next.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import core.jdbc.ConnectionManager;
-import next.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
@@ -29,6 +31,36 @@ public class UserDao {
 
             if (con != null) {
                 con.close();
+            }
+        }
+    }
+
+    public void update(User user) throws SQLException {
+        try (Connection connection = ConnectionManager.getConnection()) {
+//            String sql = "UPDATE USERS (userId, )"
+        }
+        // TODO 구현 필요함.
+    }
+
+    public List<User> findAll() throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try (Connection connection = ConnectionManager.getConnection();) {
+            String sql = "SELECT * FROM USERS";
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                users.add(new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+                        rs.getString("email")));
+            }
+            return users;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
             }
         }
     }
