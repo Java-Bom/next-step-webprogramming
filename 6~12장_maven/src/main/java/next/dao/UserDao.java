@@ -36,10 +36,21 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
+        PreparedStatement pstmt = null;
         try (Connection connection = ConnectionManager.getConnection()) {
-//            String sql = "UPDATE USERS (userId, )"
+            String sql = "UPDATE USERS SET userId=?, password=?, email=?, name=? WHERE userId=?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, user.getUserId());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getName());
+            pstmt.setString(5, user.getUserId());
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
         }
-        // TODO 구현 필요함.
     }
 
     public List<User> findAll() throws SQLException {

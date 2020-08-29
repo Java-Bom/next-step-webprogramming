@@ -1,6 +1,6 @@
 package next.controller;
 
-import core.db.DataBase;
+import next.dao.UserDao;
 import next.model.User;
 import next.user.SessionUser;
 import next.web.Controller;
@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 public class UpdateUserController implements Controller {
     private static final long serialVersionUID = 1L;
@@ -24,9 +25,15 @@ public class UpdateUserController implements Controller {
             throw new IllegalArgumentException("권한 없음");
         }
 
-        User findUser = DataBase.findUserById(sessionUser.getUserId());
-        findUser.update(user.getEmail(), user.getName(), user.getPassword());
-        DataBase.updateUser(findUser);
+        try {
+            UserDao userDao = new UserDao();
+            User findUser = userDao.findByUserId(sessionUser.getUserId());
+            findUser.update(user.getEmail(), user.getName(), user.getPassword());
+            userDao.update(findUser);
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }
+
         return "redirect:/users";
     }
 }
