@@ -19,6 +19,7 @@ public abstract class JdbcTemplate {
         }
     }
 
+
     abstract void setValues(PreparedStatement pstmt) throws SQLException;
 
 }

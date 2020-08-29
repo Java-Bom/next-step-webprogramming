@@ -132,3 +132,16 @@ Data Access Object
 
 
 
+### JdbcTemplate 으로의 리팩토링 과정
+
+1. Insert, Update 공통점 확인 : 변하는 부분과 변하지 않는 부분 extract method로 분리
+   - Insert / setValueForInsert / createQueryForInsert
+   - Update / setValueForUpdate / createQueryForUpdate
+2. 공통 라이브러리로 구현할 코드를 새로운 클래스로 추가한 후 이동한다
+   - InsertJdbcTemplate / UpdateJdbcTemplate
+3. JdbcTemplate과 UserDao 사이 의존 관계를 끊는다. 
+4. InsertJdbcTempate, UpdateJdbcTemplate의 공통부분을 합친다.
+5. JdbcTemplate의 User와의 의존관계를 끊는다.
+
+
+
