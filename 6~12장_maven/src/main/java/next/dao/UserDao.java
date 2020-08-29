@@ -12,45 +12,32 @@ import java.util.List;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
-
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
+        String query = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+            @Override
+            public void setValues(final PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
             }
-
-            if (con != null) {
-                con.close();
-            }
-        }
+        };
+        jdbcTemplate.update(query);
     }
 
     public void update(User user) throws SQLException {
-        PreparedStatement pstmt = null;
-        try (Connection connection = ConnectionManager.getConnection()) {
-            String sql = "UPDATE USERS SET userId=?, password=?, email=?, name=? WHERE userId=?";
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getName());
-            pstmt.setString(5, user.getUserId());
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
+        String query = "UPDATE USERS SET userId=?, password=?, email=?, name=? WHERE userId=?";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+            @Override
+            public void setValues(final PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setString(4, user.getName());
+                preparedStatement.setString(5, user.getUserId());
             }
-        }
+        };
+        jdbcTemplate.update(query);
     }
 
     public List<User> findAll() throws SQLException {
