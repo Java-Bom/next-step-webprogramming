@@ -40,14 +40,14 @@ public class UserDao {
         PreparedStatementSetter pss = pstmt -> {
         };
 
-        RowMapper rowMapper = rs -> new User(
+        RowMapper<User> rowMapper = rs -> new User(
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"));
 
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) jdbcTemplate.query(sql, pss, rowMapper);
+        return jdbcTemplate.query(sql, pss, rowMapper);
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -55,13 +55,13 @@ public class UserDao {
 
         PreparedStatementSetter pss = pstmt -> pstmt.setString(1, userId);
 
-        RowMapper rowMapper = rs -> new User(
+        RowMapper<User> rowMapper = rs -> new User(
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
                 rs.getString("email"));
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) jdbcTemplate.queryForObject(sql, pss, rowMapper);
+        return jdbcTemplate.queryForObject(sql, pss, rowMapper);
     }
 }
