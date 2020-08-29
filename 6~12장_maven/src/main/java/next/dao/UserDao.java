@@ -1,13 +1,10 @@
 package next.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import core.jdbc.ConnectionManager;
 import next.model.User;
 
 public class UserDao {
@@ -20,6 +17,11 @@ public class UserDao {
                 pstmt.setString(2, user.getPassword());
                 pstmt.setString(3, user.getName());
                 pstmt.setString(4, user.getEmail());
+            }
+
+            @Override
+            Object mapRow(ResultSet rs) throws SQLException {
+                return null;
             }
         };
         jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)");
@@ -36,12 +38,18 @@ public class UserDao {
                 pstmt.setString(3, user.getEmail());
                 pstmt.setString(4, user.getUserId());
             }
+
+            @Override
+            Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
         };
         jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?");
     }
 
+    @SuppressWarnings("unchecked")
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             void setValues(PreparedStatement pstmt) throws SQLException {
             }
@@ -60,7 +68,7 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
 
             @Override
             void setValues(PreparedStatement pstmt) throws SQLException {
@@ -77,6 +85,6 @@ public class UserDao {
             }
         };
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) jdbcTemplate.query(sql);
+        return (User) jdbcTemplate.queryForObject(sql);
     }
 }
