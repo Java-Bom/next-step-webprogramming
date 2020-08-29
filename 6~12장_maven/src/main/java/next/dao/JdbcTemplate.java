@@ -11,14 +11,14 @@ import java.sql.SQLException;
  * Created by jyami on 2020/08/29
  */
 public abstract class JdbcTemplate {
-    public void insert(User user) throws SQLException {
+    public void update() throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValues(user, pstmt);
+            setValues(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -32,7 +32,7 @@ public abstract class JdbcTemplate {
         }
     }
 
-    abstract void setValues(User user, PreparedStatement pstmt);
+    abstract void setValues(PreparedStatement pstmt) throws SQLException;
 
     protected abstract String createQuery();
 
