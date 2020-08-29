@@ -1,12 +1,14 @@
 package next.dao;
 
+import core.jdbc.ConnectionManager;
+import next.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import core.jdbc.ConnectionManager;
-import next.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
@@ -31,6 +33,15 @@ public class UserDao {
                 con.close();
             }
         }
+    }
+
+    public void update(User user) throws SQLException {
+        // TODO 구현 필요함.
+    }
+
+    public List<User> findAll() throws SQLException {
+        // TODO 구현 필요함.
+        return new ArrayList<User>();
     }
 
     public User findByUserId(String userId) throws SQLException {
