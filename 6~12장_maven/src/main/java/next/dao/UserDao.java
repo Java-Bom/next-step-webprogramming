@@ -21,13 +21,8 @@ public class UserDao {
                 pstmt.setString(3, user.getName());
                 pstmt.setString(4, user.getEmail());
             }
-
-            @Override
-            protected String createQuery() {
-                return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            }
         };
-        jdbcTemplate.update();
+        jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)");
     }
 
 
@@ -41,13 +36,8 @@ public class UserDao {
                 pstmt.setString(3, user.getEmail());
                 pstmt.setString(4, user.getUserId());
             }
-
-            @Override
-            protected String createQuery() {
-                return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?";
-            }
         };
-        jdbcTemplate.update();
+        jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?");
     }
 
 
