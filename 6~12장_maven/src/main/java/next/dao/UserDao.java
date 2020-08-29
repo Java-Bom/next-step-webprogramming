@@ -19,7 +19,7 @@ public class UserDao {
                 user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         PreparedStatementSetter pss = pstmt -> {
