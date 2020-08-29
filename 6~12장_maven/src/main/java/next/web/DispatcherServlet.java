@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Created by jyami on 2020/08/27
  */
-@WebServlet(name = "dispatcher", urlPatterns = "/*", loadOnStartup = 1)
+@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
 
     private static long serialVersionUID = 1L;
