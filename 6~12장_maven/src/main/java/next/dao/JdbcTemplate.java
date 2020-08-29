@@ -14,20 +14,22 @@ import java.util.List;
  */
 public class JdbcTemplate {
 
-    public void update(String sql, PreparedStatementSetter pss) throws SQLException {
+    public void update(String sql, PreparedStatementSetter pss) {
         try (Connection con = ConnectionManager.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
             pss.setValues(pstmt);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         }
     }
 
     @SuppressWarnings("rawtypes")
-    public List query(String sql, PreparedStatementSetter pss, RowMapper rowMapper) throws SQLException {
+    public List query(String sql, PreparedStatementSetter pss, RowMapper rowMapper) {
 
         ResultSet rs = null;
         try (Connection con = ConnectionManager.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) { // TODO:// ResultSet try-resource 가능한지 확인
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
 
             pss.setValues(pstmt);
             rs = pstmt.executeQuery();
@@ -36,17 +38,23 @@ public class JdbcTemplate {
             while (rs.next()) {
                 users.add(rowMapper.mapRow(rs));
             }
-
             return users;
+
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         } finally {
             if (rs != null) {
-                rs.close();
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
         }
     }
 
     @SuppressWarnings("rawtypes")
-    public Object queryForObject(String sql, PreparedStatementSetter pss, RowMapper rowMapper) throws SQLException {
+    public Object queryForObject(String sql, PreparedStatementSetter pss, RowMapper rowMapper) {
         List result = query(sql, pss, rowMapper);
         if (result.isEmpty()) {
             return null;
