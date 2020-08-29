@@ -14,21 +14,23 @@ public class JdbcTemplate {
     public void update(String sql, Object... params) throws DataAccessException {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            for (int i = 1; i <= params.length; i++) {
-                pstmt.setObject(i, params[i - 1]);
-            }
+            setValues(pstmt, params);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
     }
 
+    private void setValues(final PreparedStatement pstmt, final Object[] params) throws SQLException {
+        for (int i = 1; i <= params.length; i++) {
+            pstmt.setObject(i, params[i - 1]);
+        }
+    }
+
     public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... params) throws DataAccessException {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (int i = 1; i <= params.length; i++) {
-                preparedStatement.setObject(i, params[i - 1]);
-            }
+            setValues(preparedStatement, params);
             ResultSet resultSet = preparedStatement.getResultSet();
             List<T> results = new ArrayList<>();
             while (resultSet.next()) {
@@ -43,9 +45,7 @@ public class JdbcTemplate {
     public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... params) throws DataAccessException {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (int i = 1; i <= params.length; i++) {
-                preparedStatement.setObject(i, params[i - 1]);
-            }
+            setValues(preparedStatement, params);
             ResultSet resultSet = preparedStatement.getResultSet();
             return rowMapper.rowMap(resultSet);
         } catch (SQLException e) {
