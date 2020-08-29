@@ -1,7 +1,9 @@
 package http.request;
 
 import com.google.common.base.Strings;
-import http.HttpCookies;
+import http.HttpCookie;
+import http.HttpSession;
+import http.HttpSessions;
 import webserver.dto.RequestInfo;
 
 import java.io.BufferedReader;
@@ -16,7 +18,7 @@ public class HttpRequest {
     private RequestUri requestUri;
     private RequestHeaders requestHeaders;
     private RequestParams requestParams;
-    private HttpCookies httpCookies;
+    private HttpCookie httpCookie;
     private RequestBody requestBody;
 
     public HttpRequest(final InputStream in) {
@@ -26,7 +28,7 @@ public class HttpRequest {
 
             this.requestUri = new RequestUri(requestUri);
             this.requestHeaders = new RequestHeaders(collectHeaders(br));
-            this.httpCookies = new HttpCookies(requestHeaders.getHeaders());
+            this.httpCookie = new HttpCookie(requestHeaders.getHeaders());
             if (this.requestUri.isPost()) {
                 this.requestBody = new RequestBody(br, this.requestHeaders.getContentLength());
             }
@@ -67,10 +69,14 @@ public class HttpRequest {
     }
 
     public String getCookie(final String key) {
-        return this.httpCookies.get(key);
+        return this.httpCookie.get(key);
     }
 
     public String getBodyString() {
         return this.requestBody.getBody();
+    }
+
+    public HttpSession getSession() {
+        return HttpSessions.getSession(httpCookie.get("JESSIONID"));
     }
 }

@@ -15,6 +15,7 @@ import webserver.handler.UserFindResponseHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class HandlerMapping {
 
@@ -37,7 +38,8 @@ public class HandlerMapping {
 
     public static ResponseHandler find(HttpRequest httpRequest) {
         RequestInfo requestInfo = httpRequest.getRequestInfo();
-        String logined = httpRequest.getCookie("logined");
+        boolean logined = Optional.ofNullable(httpRequest.getSession().getAttribute("user"))
+                .isPresent();
 
         return RES.entrySet().stream()
                 .filter((entry) -> entry.getKey().equals(requestInfo))

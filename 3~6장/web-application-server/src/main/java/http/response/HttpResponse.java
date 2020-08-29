@@ -1,6 +1,8 @@
 package http.response;
 
-import http.HttpCookies;
+import http.HttpCookie;
+import http.HttpSession;
+import http.HttpSessions;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -12,7 +14,7 @@ public class HttpResponse {
 
     private final DataOutputStream dos;
     private final ResponseHeaders responseHeaders;
-    private final HttpCookies httpCookies = new HttpCookies();
+    private final HttpCookie httpCookie = new HttpCookie();
 
     public HttpResponse(final OutputStream outputStream) {
         this.dos = new DataOutputStream(outputStream);
@@ -56,7 +58,15 @@ public class HttpResponse {
         this.responseHeaders.add(key, value);
     }
 
+    public void addSession(final String uuid) {
+        if (uuid == null) {
+            HttpSession httpSession = new HttpSession();
+            HttpSessions.addSession(httpSession);
+            this.addCookie("Set-Cookie", "JESSIONID=" + httpSession.getId());
+        }
+    }
+
     public void addCookie(String key, String value) {
-        httpCookies.add(key, value);
+        httpCookie.add(key, value);
     }
 }

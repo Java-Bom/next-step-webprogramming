@@ -5,13 +5,13 @@ import util.HttpRequestUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpCookies {
+public class HttpCookie {
     private final Map<String, String> cookies = new HashMap<>();
 
-    public HttpCookies() {
+    public HttpCookie() {
     }
 
-    public HttpCookies(final Map<String, String> headers) {
+    public HttpCookie(final Map<String, String> headers) {
         headers.keySet().stream()
                 .filter("Cookie"::equals)
                 .findFirst()

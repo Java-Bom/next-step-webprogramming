@@ -22,10 +22,10 @@ public class LoginResponseHandler implements ResponseHandler {
 
         try {
             String response = this.function.apply(user);
-            httpResponse.addHeader("Set-Cookie", "logined=true");
+            httpRequest.getSession()
+                    .setAttribute("user", user);
             httpResponse.forward("/" + response);
         } catch (UserNotFoundException e) {
-            httpResponse.addHeader("Set-Cookie", "logined=false");
             httpResponse.forward("/user/login_failed.html");
         }
     }

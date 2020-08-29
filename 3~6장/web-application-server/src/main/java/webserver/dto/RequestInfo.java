@@ -20,6 +20,10 @@ public class RequestInfo {
         this.isDefault = isDefault;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
     public boolean isGet() {
         return this.method.isGet();
     }
@@ -28,6 +32,14 @@ public class RequestInfo {
         return this.method.isPost();
     }
 
+
+    public boolean enableAccess(boolean logined) {
+        if (isDefault) {
+            return true;
+        }
+
+        return logined;
+    }
 
     @Override
     public boolean equals(final Object o) {
@@ -43,12 +55,4 @@ public class RequestInfo {
         return Objects.hash(method, url);
     }
 
-
-    public boolean enableAccess(String logined) {
-        if (isDefault) {
-            return true;
-        }
-
-        return "true".equals(logined);
-    }
 }
