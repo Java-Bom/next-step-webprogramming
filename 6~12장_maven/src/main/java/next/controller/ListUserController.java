@@ -9,7 +9,6 @@ import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 
 public class ListUserController implements Controller {
     private static final long serialVersionUID = 1L;
@@ -23,11 +22,7 @@ public class ListUserController implements Controller {
         }
 
         UserDao userDao = new UserDao();
-        try {
-            req.setAttribute("users", userDao.findAll());
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
+        req.setAttribute("users", userDao.findAll());
         return "/user/list.jsp";
     }
 }

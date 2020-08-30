@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.Optional;
 
 public class ProfileController implements Controller {
@@ -25,12 +24,8 @@ public class ProfileController implements Controller {
         }
 
         User user = null;
-        try {
-            UserDao userDao = new UserDao();
-            user = userDao.findByUserId(sessionUser.get().getUserId());
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
+        UserDao userDao = new UserDao();
+        user = userDao.findByUserId(sessionUser.get().getUserId());
 
         if (user == null) {
             throw new NullPointerException("사용자를 찾을 수 없습니다.");
