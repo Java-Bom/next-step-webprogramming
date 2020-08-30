@@ -2,9 +2,6 @@ package next.controller;
 
 import next.dao.UserDao;
 import next.model.User;
-import next.web.DispatcherServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

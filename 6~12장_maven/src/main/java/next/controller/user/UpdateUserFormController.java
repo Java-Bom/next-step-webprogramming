@@ -1,5 +1,6 @@
-package next.controller;
+package next.controller.user;
 
+import next.controller.Controller;
 import next.model.CurrentUserChecker;
 import next.model.User;
 

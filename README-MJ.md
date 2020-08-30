@@ -10,6 +10,14 @@
 
 
 
+### Session
+
+JsessionId: tomcat servlet이 자동으로 클라이언트 요청이 들어올때 부여해준다. 그래서 내가 httpSession.add("user", value); 이렇게 했으니까 세션이 덮어씌워지는게 아닌가? 싶었는데 tomcat의 httpSession 자체에서 이미 클라이언트에 따른 JSESSIONID를 부여하기 때문에 개별적인 클라이언트로 인식한다. (상관없음!)
+
+즉 tomcat의 httpSession은 직접구현했던 httpSession에 해당하고, 클라이언트 구분을 tomcat 내부에서 해주며 톰캣이 httpSessions 의 역할을 이미하고있는것이다.
+
+
+
 ### setCookie
 
 ```java
@@ -83,12 +91,14 @@ urlPatterns 를 / 으로 했을 때 와 /* 으로 했을 때
 > 이경우엔 localhost:8080/user/login.jsp 요청도 처리된다.
 
 ```java
-@WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
+@WebServlet(name = "dispatcher", urlPatterns = "/*", loadOnStartup = 1)
 ```
 
 모든 JSP에 대한 요청 또한 DispatcherServlet으로 연결된다. JSP에 대한 요청이 처리되지 않는다.
 
 > localhost:8080/user/login.jsp 요청이 처리되지 않는다.
+
+"/" 일 때 필터에 있는 애들이면 dispatcher까지 안간다고 생각을 했었음 => "/*" 일때는 필터를 보지않고 dispatcher만 보는걸까?
 
 
 
