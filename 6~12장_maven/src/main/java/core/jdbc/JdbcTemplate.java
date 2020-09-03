@@ -1,7 +1,6 @@
-package next.dao;
+package core.jdbc;
 
-import core.jdbc.ConnectionManager;
-import next.dao.exception.DataAccessException;
+import core.jdbc.exception.DataAccessException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
