@@ -2,7 +2,7 @@ package next.controller.user;
 
 import core.web.Controller;
 import core.web.JspView;
-import core.web.View;
+import core.web.ModelAndView;
 import next.dao.UserDao;
 import next.user.SessionUser;
 import org.slf4j.Logger;
@@ -17,14 +17,14 @@ public class ListUserController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(ListUserController.class);
 
     @Override
-    public View execute(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
+    public ModelAndView execute(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
         SessionUser user = (SessionUser) req.getSession().getAttribute("user");
         if (ObjectUtils.isEmpty(user)) {
-            return new JspView("redirect:/users/login-form");
+            return new ModelAndView(new JspView("redirect:/users/login-form"));
         }
 
         UserDao userDao = new UserDao();
         req.setAttribute("users", userDao.findAll());
-        return new JspView("/user/list.jsp");
+        return new ModelAndView(new JspView("/user/list.jsp"));
     }
 }

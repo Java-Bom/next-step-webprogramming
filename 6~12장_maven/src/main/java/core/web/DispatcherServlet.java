@@ -1,5 +1,8 @@
 package core.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
     private RequestMapping requestMapping;
 
     @Override
@@ -22,9 +26,11 @@ public class DispatcherServlet extends HttpServlet {
 
         Controller controller = requestMapping.findController(uri);
         try {
-            View view = controller.execute(req, resp);
-            view.render(req, resp);
+            ModelAndView mv = controller.execute(req, resp);
+            View view = mv.getView();
+            view.render(mv.getModel(), req, resp);
         } catch (Exception e) {
+            log.error(uri);
             throw new ServletException(e.getMessage());
         }
     }

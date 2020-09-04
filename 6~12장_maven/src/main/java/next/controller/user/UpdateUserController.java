@@ -2,7 +2,7 @@ package next.controller.user;
 
 import core.web.Controller;
 import core.web.JspView;
-import core.web.View;
+import core.web.ModelAndView;
 import next.dao.UserDao;
 import next.model.User;
 import next.user.SessionUser;
@@ -17,7 +17,7 @@ public class UpdateUserController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
 
     @Override
-    public View execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("user");
         User user = new User(request.getParameter("userId"), request.getParameter("password"), request.getParameter("name"),
                 request.getParameter("email"));
@@ -31,6 +31,6 @@ public class UpdateUserController implements Controller {
         findUser.update(user.getEmail(), user.getName(), user.getPassword());
         userDao.update(findUser);
 
-        return new JspView("redirect:/users");
+        return new ModelAndView(new JspView("redirect:/users"));
     }
 }

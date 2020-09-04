@@ -2,7 +2,7 @@ package next.controller.qna;
 
 import core.web.Controller;
 import core.web.JsonView;
-import core.web.View;
+import core.web.ModelAndView;
 import next.dao.AnswerDao;
 import next.dto.AnswerResponse;
 import next.model.Answer;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AddAnswerController implements Controller {
     @Override
-    public View execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         Answer answer = new Answer(
                 request.getParameter("writer"),
                 request.getParameter("contents"),
@@ -22,6 +22,7 @@ public class AddAnswerController implements Controller {
         AnswerDao answerDao = new AnswerDao();
         Answer savedAnswer = answerDao.insert(answer);
         AnswerResponse answerResponse = new AnswerResponse(savedAnswer);
-        return new JsonView(answerResponse);
+        request.setAttribute("answer", answerResponse);
+        return new ModelAndView(new JsonView());
     }
 }

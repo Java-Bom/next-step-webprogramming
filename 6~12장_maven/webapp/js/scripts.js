@@ -71,6 +71,6 @@ function onError() {
 
 function onSuccessAddAnswer(json, status) {
     const answerTemplate = $("#answerTemplate").html();
-    const template = answerTemplate.format(json.writer, json.createdDate, json.contents, json.anserId);
+    const template = answerTemplate.format(json.answer.writer, json.answer.createdDate, json.answer.contents, json.answer.anserId);
     $(".qna-comment-slipp-articles").prepend(template);
 }

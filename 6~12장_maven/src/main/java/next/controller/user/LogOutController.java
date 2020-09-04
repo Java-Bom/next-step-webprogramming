@@ -2,7 +2,7 @@ package next.controller.user;
 
 import core.web.Controller;
 import core.web.JspView;
-import core.web.View;
+import core.web.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +15,11 @@ public class LogOutController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
-    public View execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public ModelAndView execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         log.debug("logoutUser : {}", session.getAttribute("user"));
         session.removeAttribute("user");
-        return new JspView("redirect:/");
+        return new ModelAndView(new JspView("redirect:/"));
     }
 }
 
