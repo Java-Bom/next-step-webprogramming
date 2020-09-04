@@ -45,7 +45,7 @@ public class Answer {
     }
 
     public long getTimeFromCreateDate() {
-        return ZonedDateTime.of(this.createdDate, ZoneId.of("Asia/Seoul")).toInstant().getEpochSecond();
+        return ZonedDateTime.of(this.createdDate, ZoneId.systemDefault()).toInstant().getEpochSecond();
     }
 
     public long getQuestionId() {

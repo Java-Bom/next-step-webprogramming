@@ -25,7 +25,9 @@ public class JdbcTemplate {
              PreparedStatement pstmt = preparedStatementSetter.set(connection)) {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
-            keyHolder.setId(rs.getLong(1));
+            if (rs.next()) {
+                keyHolder.setId(rs.getLong(1));
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }

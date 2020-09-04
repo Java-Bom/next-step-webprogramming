@@ -32,6 +32,9 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void move(String viewName, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (viewName == null) {
+            return;
+        }
         if (viewName.startsWith(REDIRECT_PREFIX)) {
             response.sendRedirect(viewName.substring(REDIRECT_PREFIX.length()));
             return;
