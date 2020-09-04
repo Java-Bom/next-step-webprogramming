@@ -2,6 +2,7 @@ package next.web;
 
 import next.controller.HomeController;
 import next.controller.qna.AddAnswerController;
+import next.controller.qna.DeleteAnswerController;
 import next.controller.qna.ShowController;
 import next.controller.user.CreateUserController;
 import next.controller.user.ListUserController;
@@ -31,6 +32,7 @@ public class RequestMapping {
         this.requestMappings.put("/qna/show", new ShowController());
         this.requestMappings.put("/qna/form", new ForwardController("/qna/form.jsp"));
         this.requestMappings.put("/api/qna/addAnswer", new AddAnswerController());
+        this.requestMappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
     }
 
     public Controller findController(String url) {

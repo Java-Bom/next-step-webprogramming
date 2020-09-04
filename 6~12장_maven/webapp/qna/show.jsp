@@ -65,7 +65,7 @@
                                 Collection<Answer> answers = (Collection<Answer>) request.getAttribute("answers");
                                 for (Answer answer : answers) {
                             %>
-                            <article class="article">
+                            <article id="answer-<%=answer.getAnswerId()%>" class="article">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
                                         <img src="https://graph.facebook.com/v2.3/1324855987/picture"
@@ -78,18 +78,19 @@
                                     </div>
                                 </div>
                                 <div class="article-doc comment-doc">
-                                    <p><%=answer.getContents()%>></p>
+                                    <p><%=answer.getContents()%>
+                                    </p>
                                 </div>
                                 <div class="article-util">
                                     <ul class="article-util-list">
                                         <li>
                                             <a class="link-modify-article"
-                                               href="/api/qna/updateAnswer?answerId=<%=answer.getAnswerId()%>>">수정</a>
+                                               href="/api/qna/updateAnswer?answerId=<%=answer.getAnswerId()%>">수정</a>
                                         </li>
                                         <li>
-                                            <form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+                                            <form class="form-delete" method="POST">
                                                 <input type="hidden" name="answerId" value="<%=answer.getAnswerId()%>"/>
-                                                <button type="submit" class="link-delete-article">삭제</button>
+                                                <button type="button" class="link-delete-article">삭제</button>
                                             </form>
                                         </li>
                                     </ul>

@@ -42,4 +42,10 @@ public class AnswerDao {
         return jdbcTemplate.query(sql, rs -> new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
                 rs.getTimestamp("createdDate").toLocalDateTime(), questionId), questionId);
     }
+
+    public void delete(final Long answerId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
+        jdbcTemplate.update(sql, answerId);
+    }
 }

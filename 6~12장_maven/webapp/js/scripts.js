@@ -31,8 +31,9 @@ function logout() {
 
 $answerBtn = document.querySelector("#answerBtn");
 $answerBtn.addEventListener("click", addAnswer);
+$(".qna-comment").on("click", ".form-delete", deleteAnswer);
 
-function addAnswer() {
+function addAnswer(event) {
     event.preventDefault();
     const queryString = $("form[name=answer]").serialize();
 
@@ -46,6 +47,24 @@ function addAnswer() {
     });
 }
 
+function deleteAnswer(event) {
+    event.preventDefault();
+
+    const deleteBtn = $(this);
+    const queryString = deleteBtn.closest("form").serialize();
+
+    $.ajax({
+        type: "POST",
+        url: "/api/qna/deleteAnswer",
+        data: queryString,
+        dataType: "json",
+        error: onError,
+        success: function () {
+            deleteBtn.closest("article").remove();
+        }
+    });
+}
+
 function onError() {
     console.log("error")
 }
@@ -54,8 +73,4 @@ function onSuccessAddAnswer(json, status) {
     const answerTemplate = $("#answerTemplate").html();
     const template = answerTemplate.format(json.writer, json.createdDate, json.contents, json.anserId);
     $(".qna-comment-slipp-articles").prepend(template);
-}
-
-function onSuccessDeleteAnswer(json, status) {
-
 }
