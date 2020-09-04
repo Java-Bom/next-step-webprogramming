@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import next.dao.UserDao;
 import next.model.User;
@@ -25,7 +25,7 @@ public class UpdateUserController implements Controller {
         }
 
         UserDao userDao = new UserDao();
-        User findUser = userDao.findByUserId(sessionUser.getUserId());
+        User findUser = userDao.findById(sessionUser.getUserId());
         findUser.update(user.getEmail(), user.getName(), user.getPassword());
         userDao.update(findUser);
 

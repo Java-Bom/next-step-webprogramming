@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import next.dao.UserDao;
 import next.user.SessionUser;

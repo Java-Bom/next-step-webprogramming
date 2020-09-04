@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import next.dao.UserDao;
 import next.model.User;
@@ -20,7 +20,7 @@ public class LoginUserController implements Controller {
         User loginUser = null;
         try {
             UserDao userDao = new UserDao();
-            loginUser = userDao.findByUserId(request.getParameter("userId"));
+            loginUser = userDao.findById(request.getParameter("userId"));
             loginUser.checkPassword(request.getParameter("password"));
         } catch (IllegalArgumentException e) {
             return "redirect:/user/login_failed.jsp";

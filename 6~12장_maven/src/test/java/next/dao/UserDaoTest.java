@@ -1,10 +1,9 @@
 package next.dao;
 
-import static org.junit.Assert.*;
-
+import next.model.User;
 import org.junit.Test;
 
-import next.model.User;
+import static org.junit.Assert.assertEquals;
 
 public class UserDaoTest {
 
@@ -14,7 +13,7 @@ public class UserDaoTest {
         UserDao userDao = new UserDao();
         userDao.insert(expected);
 
-        User actual = userDao.findByUserId(expected.getUserId());
+        User actual = userDao.findById(expected.getUserId());
         assertEquals(expected, actual);
     }
 

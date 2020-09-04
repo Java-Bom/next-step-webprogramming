@@ -1,13 +1,14 @@
 package next.web;
 
-import next.controller.CreateUserController;
 import next.controller.HomeController;
-import next.controller.ListUserController;
-import next.controller.LogOutController;
-import next.controller.LoginUserController;
-import next.controller.ProfileController;
-import next.controller.UpdateUserController;
-import next.controller.UpdateUserFormController;
+import next.controller.qna.ShowController;
+import next.controller.user.CreateUserController;
+import next.controller.user.ListUserController;
+import next.controller.user.LogOutController;
+import next.controller.user.LoginUserController;
+import next.controller.user.ProfileController;
+import next.controller.user.UpdateUserController;
+import next.controller.user.UpdateUserFormController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,8 @@ public class RequestMapping {
         this.requestMappings.put("/users/login-form", new ForwardController("/user/login.jsp"));
         this.requestMappings.put("/users/login", new LoginUserController());
         this.requestMappings.put("/users/logout", new LogOutController());
+        this.requestMappings.put("/qna/show", new ShowController());
+        this.requestMappings.put("/qna/form", new ForwardController("/qna/form.jsp"));
     }
 
     public Controller findController(String url) {

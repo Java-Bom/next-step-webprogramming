@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import next.dao.UserDao;
 import next.model.User;
@@ -25,7 +25,7 @@ public class ProfileController implements Controller {
 
         User user = null;
         UserDao userDao = new UserDao();
-        user = userDao.findByUserId(sessionUser.get().getUserId());
+        user = userDao.findById(sessionUser.get().getUserId());
 
         if (user == null) {
             throw new NullPointerException("사용자를 찾을 수 없습니다.");

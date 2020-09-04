@@ -20,6 +20,17 @@ public class JdbcTemplate {
         }
     }
 
+    public void update(PreparedStatementSetter preparedStatementSetter, KeyHolder keyHolder) throws DataAccessException {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement pstmt = preparedStatementSetter.set(connection)) {
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            keyHolder.setId(rs.getLong(1));
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
+        }
+    }
+
     private void setValues(final PreparedStatement pstmt, final Object[] params) throws SQLException {
         for (int i = 1; i <= params.length; i++) {
             pstmt.setObject(i, params[i - 1]);
@@ -30,6 +41,7 @@ public class JdbcTemplate {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setValues(preparedStatement, params);
+            preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             List<T> results = new ArrayList<>();
             while (resultSet.next()) {
@@ -42,14 +54,7 @@ public class JdbcTemplate {
     }
 
     public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... params) throws DataAccessException {
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            setValues(preparedStatement, params);
-            ResultSet resultSet = preparedStatement.getResultSet();
-            return rowMapper.rowMap(resultSet);
-        } catch (SQLException e) {
-            throw new DataAccessException(e);
-        }
+        return query(sql, rowMapper, params).get(0);
     }
 
 }

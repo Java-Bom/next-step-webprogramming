@@ -25,7 +25,7 @@ public class UserDao {
         );
     }
 
-    public User findByUserId(String userId) {
+    public User findById(String userId) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         return jdbcTemplate.queryForObject("SELECT userId, password, name, email FROM USERS WHERE userid=?",

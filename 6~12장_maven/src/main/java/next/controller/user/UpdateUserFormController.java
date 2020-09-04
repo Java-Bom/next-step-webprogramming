@@ -1,4 +1,4 @@
-package next.controller;
+package next.controller.user;
 
 import next.dao.UserDao;
 import next.model.User;
@@ -24,7 +24,7 @@ public class UpdateUserFormController implements Controller {
 
         User findUser = null;
         UserDao userDao = new UserDao();
-        findUser = userDao.findByUserId(sessionUser.getUserId());
+        findUser = userDao.findById(sessionUser.getUserId());
         request.setAttribute("user", findUser);
         return "/user/update.jsp";
     }
