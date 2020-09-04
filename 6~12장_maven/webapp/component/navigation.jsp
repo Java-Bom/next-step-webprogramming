@@ -18,7 +18,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="javabom/next-step-webprogramming/6~12장_maven/webapp/home.jsp">Posts</a></li>
+                <li class="active"><a href="/">Posts</a></li>
                 <%
                     Optional<SessionUser> sessionUser = Optional.ofNullable((SessionUser) request.getSession().getAttribute("user"));
                     if (sessionUser.isPresent()) {

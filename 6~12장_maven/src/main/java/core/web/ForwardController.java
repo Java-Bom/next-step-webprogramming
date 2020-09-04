@@ -1,4 +1,4 @@
-package next.web;
+package core.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,7 @@ public class ForwardController implements Controller {
     }
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        return forwardUrl;
+    public View execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        return new JspView(forwardUrl);
     }
 }

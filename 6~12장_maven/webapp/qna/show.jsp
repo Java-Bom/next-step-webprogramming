@@ -65,7 +65,7 @@
                                 Collection<Answer> answers = (Collection<Answer>) request.getAttribute("answers");
                                 for (Answer answer : answers) {
                             %>
-                            <article id="answer-<%=answer.getAnswerId()%>" class="article">
+                            <article id="answer" class="article">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
                                         <img src="https://graph.facebook.com/v2.3/1324855987/picture"

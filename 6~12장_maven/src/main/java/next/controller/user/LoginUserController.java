@@ -1,9 +1,11 @@
 package next.controller.user;
 
+import core.web.Controller;
+import core.web.JspView;
+import core.web.View;
 import next.dao.UserDao;
 import next.model.User;
 import next.user.SessionUser;
-import next.web.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,20 +18,20 @@ public class LoginUserController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
-    public String execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public View execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         User loginUser = null;
         try {
             UserDao userDao = new UserDao();
             loginUser = userDao.findById(request.getParameter("userId"));
             loginUser.checkPassword(request.getParameter("password"));
         } catch (IllegalArgumentException e) {
-            return "redirect:/user/login_failed.jsp";
+            return new JspView("redirect:/user/login_failed.jsp");
         }
 
         HttpSession session = request.getSession();
         session.setAttribute("user", new SessionUser(loginUser.getUserId(), loginUser.getEmail()));
         log.debug("loginUser : {}", loginUser);
-        return "redirect:/";
+        return new JspView("redirect:/");
     }
 }
 
