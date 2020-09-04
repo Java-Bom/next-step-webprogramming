@@ -20,7 +20,7 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="./qna/show?questionId={<%=question.getQuestionId()%>"><%=question.getTitle()%>
+                                <a href="./qna/show?questionId=<%=question.getQuestionId()%>"><%=question.getTitle()%>
                                 </a>
                             </strong>
                             <div class="auth-info">
