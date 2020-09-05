@@ -1,7 +1,9 @@
 package core.mvc;
 
+import next.controller.HomeController;
 import next.controller.auth.UserLoginController;
 import next.controller.auth.UserLogoutController;
+import next.controller.qna.ShowController;
 import next.controller.user.*;
 import next.http.HttpMethod;
 import next.http.HttpRequest;
@@ -19,6 +21,7 @@ public class RequestMapping {
     private Map<HttpRequest, Controller> mappings = new HashMap<>();
 
     void initMapping() {
+        mappings.put(new HttpRequest("/", HttpMethod.GET), new HomeController());
         mappings.put(new HttpRequest("/user/list", HttpMethod.GET), new ListUserController());
         mappings.put(new HttpRequest("/user/create", HttpMethod.GET), new ForwardController("/user/form.jsp"));
         mappings.put(new HttpRequest("/user/create", HttpMethod.POST), new CreateUserController());
@@ -27,6 +30,7 @@ public class RequestMapping {
         mappings.put(new HttpRequest("/user/logout", HttpMethod.GET), new UserLogoutController());
         mappings.put(new HttpRequest("/user/update", HttpMethod.GET), new UpdateUserFormController());
         mappings.put(new HttpRequest("/user/update", HttpMethod.POST), new UpdateUserController());
+        mappings.put(new HttpRequest("/question/show", HttpMethod.GET), new ShowController());
 
         logger.info("initialized request mappings!");
     }

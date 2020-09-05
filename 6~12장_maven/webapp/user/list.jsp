@@ -24,7 +24,6 @@
                 %>
                 <tr>
                     <th scope="row">${status.count}</th>
-                    <td><%=user.getUserId()%>
                     </td>
                     <td><%=user.getName()%>
                     </td>
