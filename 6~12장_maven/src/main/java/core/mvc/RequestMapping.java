@@ -23,6 +23,7 @@ public class RequestMapping {
     void initMapping() {
         mappings.put(new HttpRequest("/", HttpMethod.GET), new HomeController());
         mappings.put(new HttpRequest("/user/list", HttpMethod.GET), new ListUserController());
+        mappings.put(new HttpRequest("/user/profile", HttpMethod.GET), new UserProfileController());
         mappings.put(new HttpRequest("/user/create", HttpMethod.GET), new ForwardController("/user/form.jsp"));
         mappings.put(new HttpRequest("/user/create", HttpMethod.POST), new CreateUserController());
         mappings.put(new HttpRequest("/user/login", HttpMethod.GET), new ForwardController("/user/login.jsp"));

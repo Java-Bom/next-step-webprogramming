@@ -20,9 +20,9 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name"><%=question.getWriter()%>
+                            <a class="article-author-name" href=<%="/user/profile?userId=" + question.getWriter()%>><%=question.getWriter()%>
                             </a>
-                            <a href="/questions/413" class="article-header-time" title="퍼머링크">
+                            <a class="article-header-time" title="퍼머링크" href=<%="/question/show?questionId=" + question.getQuestionId()%>>
                                 <%=question.getCreatedDate()%>
                                 <i class="icon-link"></i>
                             </a>

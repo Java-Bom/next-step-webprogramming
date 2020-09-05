@@ -21,7 +21,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time"><%=question.getCreatedDate()%></span>
-                                <a href="/user/profile.jsp" class="author"><%=question.getWriter()%>
+                                <a class="author" href=<%="/user/profile?userId=" + question.getWriter()%>><%=question.getWriter()%>
                                 </a>
                             </div>
                             <div class="reply" title="댓글">
