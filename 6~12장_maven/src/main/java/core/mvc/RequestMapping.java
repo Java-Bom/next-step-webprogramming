@@ -1,6 +1,7 @@
-package next.web;
+package core.mvc;
 
-import next.controller.*;
+import next.controller.auth.UserLoginController;
+import next.controller.auth.UserLogoutController;
 import next.controller.user.*;
 import next.http.HttpMethod;
 import next.http.HttpRequest;

@@ -1,8 +1,5 @@
-package next.dao;
+package core.jdbc;
 
-import core.jdbc.ConnectionManager;
-
-import javax.print.attribute.standard.PresentationDirection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package next.dao;
+package core.jdbc;
 
 /**
  * Created by jyami on 2020/08/29

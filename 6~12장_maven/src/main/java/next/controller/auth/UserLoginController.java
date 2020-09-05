@@ -1,5 +1,6 @@
-package next.controller;
+package next.controller.auth;
 
+import core.mvc.Controller;
 import next.dao.UserDao;
 import next.model.User;
 
