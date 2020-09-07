@@ -12,6 +12,16 @@ import java.util.List;
  */
 public class QuestionDao {
 
+    public void insert(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
+        jdbcTemplate.update("INSERT INTO QUESTIONS (writer, title, contents, createdDate, countOfAnswer) " +
+                        "VALUES (?, ?, ?, ?, ?)",
+                question.getWriter(), question.getTitle(), question.getContents(),
+                question.getCreatedDate(), question.getCountOfComment());
+    }
+
+
     public List<Question> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 

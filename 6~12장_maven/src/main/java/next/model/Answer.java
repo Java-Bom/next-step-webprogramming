@@ -61,4 +61,15 @@ public class Answer {
     public int hashCode() {
         return Objects.hash(answerId, writer, contents, createdDate, questionId);
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "answerId=" + answerId +
+                ", writer='" + writer + '\'' +
+                ", contents='" + contents + '\'' +
+                ", createdDate=" + createdDate +
+                ", questionId=" + questionId +
+                '}';
+    }
 }

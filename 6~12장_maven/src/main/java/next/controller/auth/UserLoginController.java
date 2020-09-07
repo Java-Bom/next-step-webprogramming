@@ -25,7 +25,7 @@ public class UserLoginController implements Controller {
         if (successUserLogin) {
             session.setAttribute("loginFailed", false);
             session.setAttribute("user", user);
-            return "redirect:/user/list";
+            return "redirect:/";
         } else {
             session.setAttribute("loginFailed", true);
             return "/user/login.jsp";
