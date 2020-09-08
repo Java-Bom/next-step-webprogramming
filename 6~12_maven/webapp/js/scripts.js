@@ -3,16 +3,16 @@ t.addEventListener('click', addAnswer);
 
 function addAnswer(e) {
     e.preventDefault(); //submit 자동 동작을 막는다.
-    var queryString = $("form[name=answer]").serialize(); // form 데이터를 자동으로 묶는다.
+    const queryString = $("form[name=answer]").serialize(); // form 데이터를 자동으로 묶는다.
     console.log(queryString);
 
     $.ajax({
-        type : 'post',
-        url : '/api/qna/addAnswer',
-        data : queryString,
-        dataType : 'json',
+        type: "POST",
+        url: "/api/qna/addAnswer",
+        data: queryString,
+        dataType: "json",
         error: onError,
-        success : onSuccess,
+        success: onSuccess
     });
 }
 
@@ -24,6 +24,28 @@ function onSuccess(json, status) {
 
 function onError(xhr, status) {
     alert("error");
+}
+
+$(".qna-comment").on("click", ".form-delete", deleteAnswer);
+
+function deleteAnswer(e){
+    e.preventDefault(); //submit 자동 동작을 막는다.
+
+    var deleteBtn = $(this);
+    var queryString = deleteBtn.closest("form").serialize();
+
+    $.ajax({
+        type: "POST",
+        url: "/api/qna/deleteAnswer",
+        data: queryString,
+        dataType: "json",
+        error: onError,
+        success: function (json, status) {
+            if (json.status) {
+                deleteBtn.closest('article').remove();
+            }
+        }
+    });
 }
 
 String.prototype.format = function () {

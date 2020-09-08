@@ -14,7 +14,7 @@ public class Answer {
     private long questionId;
 
     public Answer(String writer, String contents, long questionId) {
-        new Answer(0, writer, contents, new Date(), questionId);
+        this(0, writer, contents, new Date(), questionId);
     }
 
     public Answer(long answerId, String writer, String contents, Date createdDate, long questionId) {
@@ -60,16 +60,5 @@ public class Answer {
     @Override
     public int hashCode() {
         return Objects.hash(answerId, writer, contents, createdDate, questionId);
-    }
-
-    @Override
-    public String toString() {
-        return "Answer{" +
-                "answerId=" + answerId +
-                ", writer='" + writer + '\'' +
-                ", contents='" + contents + '\'' +
-                ", createdDate=" + createdDate +
-                ", questionId=" + questionId +
-                '}';
     }
 }

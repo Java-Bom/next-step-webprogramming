@@ -17,14 +17,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddAnswerController implements Controller {
 
-    private static final Logger log = LoggerFactory.getLogger(AddAnswerController.class);
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = CurrentUserChecker.getCurrentUser(request).get();
         Answer answer = new Answer(user.getUserId(), request.getParameter("contents"),
                 Long.parseLong(request.getParameter("questionId")));
-        log.debug("answer: {}", answer);
 
         AnswerDao answerDao = new AnswerDao();
         answerDao.insert(answer);

@@ -3,10 +3,7 @@ package core.mvc;
 import next.controller.HomeController;
 import next.controller.auth.UserLoginController;
 import next.controller.auth.UserLogoutController;
-import next.controller.qna.AddAnswerController;
-import next.controller.qna.CreateQuestionController;
-import next.controller.qna.CreateQuestionFormController;
-import next.controller.qna.ShowController;
+import next.controller.qna.*;
 import next.controller.user.*;
 import next.http.HttpMethod;
 import next.http.HttpRequest;
@@ -38,6 +35,7 @@ public class RequestMapping {
         mappings.put(new HttpRequest("/question/create", HttpMethod.GET), new CreateQuestionFormController());
         mappings.put(new HttpRequest("/question/create", HttpMethod.POST), new CreateQuestionController());
         mappings.put(new HttpRequest("/api/qna/addAnswer", HttpMethod.POST), new AddAnswerController());
+        mappings.put(new HttpRequest("/api/qna/deleteAnswer", HttpMethod.POST), new DeleteAnswerController());
 
         logger.info("initialized request mappings!");
     }
