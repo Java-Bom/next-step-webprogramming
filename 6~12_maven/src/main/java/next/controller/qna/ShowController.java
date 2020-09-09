@@ -1,8 +1,6 @@
 package next.controller.qna;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
@@ -19,19 +17,17 @@ import java.util.Optional;
 /**
  * Created by jyami on 2020/09/05
  */
-public class ShowController implements Controller {
+public class ShowController extends AbstractController {
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return new JspView("redirect:/user/login");
+            return jspView("redirect:/user/login");
         }
 
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Question question = new QuestionDao().findByQuestionId(questionId);
         List<Answer> answers = new AnswerDao().findAllByQuestionId(questionId);
-        request.setAttribute("question", question);
-        request.setAttribute("answers", answers);
-        return new JspView("/qna/show.jsp");
+        return jspView("/qna/show.jsp").addObject("answers", answers).addObject("question", question);
     }
 }

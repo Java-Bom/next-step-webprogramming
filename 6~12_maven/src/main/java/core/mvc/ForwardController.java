@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by jyami on 2020/08/27
  */
-public class ForwardController implements Controller {
+public class ForwardController extends AbstractController {
 
     private String forwardUrl;
 
@@ -17,7 +17,7 @@ public class ForwardController implements Controller {
     }
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
-        return new JspView(forwardUrl);
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        return jspView(forwardUrl);
     }
 }

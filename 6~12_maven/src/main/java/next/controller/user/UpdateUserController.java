@@ -1,8 +1,6 @@
 package next.controller.user;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.UserDao;
 import next.model.CurrentUserChecker;
 import next.model.User;
@@ -13,13 +11,13 @@ import java.util.Optional;
 /**
  * Created by jyami on 2020/08/27
  */
-public class UpdateUserController implements Controller {
+public class UpdateUserController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUserOptional = CurrentUserChecker.getCurrentUser(request);
         if (!currentUserOptional.isPresent()) {
-            return new JspView("redirect:/user/login");
+            return jspView("redirect:/user/login");
         }
         User currentUser = currentUserOptional.get();
         currentUser.setUserId(request.getParameter("userId"));
@@ -29,7 +27,7 @@ public class UpdateUserController implements Controller {
 
         new UserDao().update(currentUser);
 
-        return new JspView("redirect:/user/list");
+        return jspView("redirect:/user/list");
 
     }
 }

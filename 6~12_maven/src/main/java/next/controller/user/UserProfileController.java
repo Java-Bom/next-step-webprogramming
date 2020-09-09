@@ -1,8 +1,6 @@
 package next.controller.user;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.UserDao;
 import next.model.CurrentUserChecker;
 import next.model.User;
@@ -14,18 +12,17 @@ import java.util.Optional;
 /**
  * Created by jyami on 2020/09/05
  */
-public class UserProfileController implements Controller {
+public class UserProfileController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return new JspView("redirect:/user/login");
+            return jspView("redirect:/user/login");
         }
 
         String userId = request.getParameter("userId");
         User user = new UserDao().findByUserId(userId);
-        request.setAttribute("user", user);
-        return new JspView("/user/profile.jsp");
+        return jspView("/user/profile.jsp").addObject("user", user);
     }
 }

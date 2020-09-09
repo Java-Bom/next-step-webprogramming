@@ -7,5 +7,5 @@ import javax.servlet.http.HttpServletResponse;
  * Created by jyami on 2020/08/27
  */
 public interface Controller {
-    View execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

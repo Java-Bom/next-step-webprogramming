@@ -1,8 +1,6 @@
 package next.controller.user;
 
-import core.mvc.Controller;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.UserDao;
 import next.model.User;
 
@@ -13,10 +11,10 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by jyami on 2020/08/27
  */
-public class CreateUserController implements Controller {
+public class CreateUserController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(request.getParameter("userId"), request.getParameter("password"),
                 request.getParameter("name"), request.getParameter("email"));
 
@@ -24,6 +22,6 @@ public class CreateUserController implements Controller {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return new JspView("redirect:/user/list");
+        return jspView("redirect:/user/list");
     }
 }

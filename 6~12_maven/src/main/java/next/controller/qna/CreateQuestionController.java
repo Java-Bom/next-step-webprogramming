@@ -1,9 +1,6 @@
 package next.controller.qna;
 
-import core.mvc.Controller;
-import core.mvc.JsonView;
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.QuestionDao;
 import next.model.CurrentUserChecker;
 import next.model.Question;
@@ -16,13 +13,13 @@ import java.util.Optional;
 /**
  * Created by jyami on 2020/09/05
  */
-public class CreateQuestionController implements Controller {
+public class CreateQuestionController extends AbstractController {
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return new JspView("redirect:/user/login");
+            return jspView("redirect:/user/login");
         }
 
         Question question = new Question(currentUser.get().getUserId(),
@@ -30,6 +27,6 @@ public class CreateQuestionController implements Controller {
                 request.getParameter("contents"));
         new QuestionDao().insert(question);
 
-        return new JspView("redirect:/");
+        return jspView("redirect:/");
     }
 }

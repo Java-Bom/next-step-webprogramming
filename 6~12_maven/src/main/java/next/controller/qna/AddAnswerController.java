@@ -1,8 +1,6 @@
 package next.controller.qna;
 
-import core.mvc.Controller;
-import core.mvc.JsonView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.AnswerDao;
 import next.model.Answer;
 import next.model.CurrentUserChecker;
@@ -14,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by jyami on 2020/09/06
  */
-public class AddAnswerController implements Controller {
+public class AddAnswerController extends AbstractController {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = CurrentUserChecker.getCurrentUser(request).get();
         Answer answer = new Answer(user.getUserId(), request.getParameter("contents"),
                 Long.parseLong(request.getParameter("questionId")));
@@ -25,7 +23,6 @@ public class AddAnswerController implements Controller {
         AnswerDao answerDao = new AnswerDao();
         answerDao.insert(answer);
 
-        request.setAttribute("answer", answer);
-        return new JsonView();
+        return jsonView().addObject("answer", answer);
     }
 }
