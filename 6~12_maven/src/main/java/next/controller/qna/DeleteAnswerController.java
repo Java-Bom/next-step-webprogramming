@@ -1,7 +1,9 @@
 package next.controller.qna;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import core.jdbc.DataAccessException;
 import core.mvc.Controller;
+import core.mvc.JsonView;
+import core.mvc.View;
 import next.dao.AnswerDao;
 import next.model.Result;
 
@@ -13,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteAnswerController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         long answerId = Long.parseLong(request.getParameter("answerId"));
-        new AnswerDao().delete(answerId);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(objectMapper.writeValueAsString(Result.ok()));
-        return null;
+        try{
+            new AnswerDao().delete(answerId);
+            request.setAttribute("result", Result.ok());
+        }catch (DataAccessException e){
+            request.setAttribute("result", Result.fail(e.getMessage()));
+        }
+        return new JsonView();
     }
 }

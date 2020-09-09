@@ -1,6 +1,8 @@
 package next.controller.auth;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import next.dao.UserDao;
 import next.model.User;
 
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpSession;
 public class UserLoginController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
         User user = new UserDao().findByUserId(userId);
@@ -25,10 +27,10 @@ public class UserLoginController implements Controller {
         if (successUserLogin) {
             session.setAttribute("loginFailed", false);
             session.setAttribute("user", user);
-            return "redirect:/";
+            return new JspView("redirect:/");
         } else {
             session.setAttribute("loginFailed", true);
-            return "/user/login.jsp";
+            return new JspView("/user/login.jsp");
         }
     }
 }

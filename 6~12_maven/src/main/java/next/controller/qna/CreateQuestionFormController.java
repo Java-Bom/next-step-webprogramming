@@ -1,6 +1,8 @@
 package next.controller.qna;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import next.model.CurrentUserChecker;
 import next.model.User;
 
@@ -13,12 +15,12 @@ import java.util.Optional;
  */
 public class CreateQuestionFormController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return "redirect:/user/login";
+            return new JspView("redirect:/user/login");
         }
         request.setAttribute("user", currentUser.get());
-        return "/qna/form.jsp";
+        return new JspView("/qna/form.jsp");
     }
 }

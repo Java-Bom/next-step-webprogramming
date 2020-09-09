@@ -1,6 +1,8 @@
 package next.controller.user;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import next.dao.UserDao;
 import next.model.User;
 
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpSession;
 public class CreateUserController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(request.getParameter("userId"), request.getParameter("password"),
                 request.getParameter("name"), request.getParameter("email"));
 
@@ -22,6 +24,6 @@ public class CreateUserController implements Controller {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return "redirect:/user/list";
+        return new JspView("redirect:/user/list");
     }
 }

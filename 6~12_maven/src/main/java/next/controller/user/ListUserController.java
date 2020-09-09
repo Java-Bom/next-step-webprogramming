@@ -1,6 +1,8 @@
 package next.controller.user;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import next.dao.UserDao;
 import next.model.CurrentUserChecker;
 import next.model.User;
@@ -16,14 +18,14 @@ import java.util.Optional;
 public class ListUserController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return "redirect:/user/login";
+            return new JspView("redirect:/user/login");
         }
         List<User> all = new UserDao().findAll();
 
         request.setAttribute("users", all);
-        return "/user/list.jsp";
+        return new JspView("/user/list.jsp");
     }
 }

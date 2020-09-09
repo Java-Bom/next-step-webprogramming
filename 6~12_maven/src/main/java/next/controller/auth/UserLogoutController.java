@@ -1,6 +1,8 @@
 package next.controller.auth;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +13,9 @@ import javax.servlet.http.HttpSession;
  */
 public class UserLogoutController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
-        return "redirect:/";
+        return new JspView("redirect:/");
     }
 }

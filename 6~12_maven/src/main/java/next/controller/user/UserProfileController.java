@@ -1,13 +1,14 @@
 package next.controller.user;
 
 import core.mvc.Controller;
+import core.mvc.JspView;
+import core.mvc.View;
 import next.dao.UserDao;
 import next.model.CurrentUserChecker;
 import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,15 +17,15 @@ import java.util.Optional;
 public class UserProfileController implements Controller {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
-            return "redirect:/user/login";
+            return new JspView("redirect:/user/login");
         }
 
         String userId = request.getParameter("userId");
         User user = new UserDao().findByUserId(userId);
         request.setAttribute("user", user);
-        return "/user/profile.jsp";
+        return new JspView("/user/profile.jsp");
     }
 }
