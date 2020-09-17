@@ -14,6 +14,9 @@ import java.util.Optional;
  * Created by jyami on 2020/09/05
  */
 public class CreateQuestionController extends AbstractController {
+
+    private QuestionDao questionDao = new QuestionDao();
+
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -25,7 +28,7 @@ public class CreateQuestionController extends AbstractController {
         Question question = new Question(currentUser.get().getUserId(),
                 request.getParameter("title"),
                 request.getParameter("contents"));
-        new QuestionDao().insert(question);
+        questionDao.insert(question);
 
         return jspView("redirect:/");
     }

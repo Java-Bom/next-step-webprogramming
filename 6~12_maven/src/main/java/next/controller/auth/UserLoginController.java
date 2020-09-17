@@ -13,11 +13,13 @@ import javax.servlet.http.HttpSession;
  */
 public class UserLoginController extends AbstractController {
 
+    private UserDao userDao = new UserDao();
+
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
-        User user = new UserDao().findByUserId(userId);
+        User user = userDao.findByUserId(userId);
 
         boolean successUserLogin = user != null && user.getPassword().equals(password);
 

@@ -10,8 +10,6 @@ import next.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +36,7 @@ public class RequestMapping {
         mappings.put(new HttpRequest("/question/create", HttpMethod.POST), new CreateQuestionController());
         mappings.put(new HttpRequest("/api/qna/addAnswer", HttpMethod.POST), new AddAnswerController());
         mappings.put(new HttpRequest("/api/qna/deleteAnswer", HttpMethod.POST), new DeleteAnswerController());
+        mappings.put(new HttpRequest("/api/qna/addCoundOfAnswer", HttpMethod.POST), new AddCountOfCommentController());
 
         logger.info("initialized request mappings!");
     }
