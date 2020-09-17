@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class QuestionDao {
 
-    public void insert(Question question) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
+    public void insert(Question question) {
         jdbcTemplate.update("INSERT INTO QUESTIONS (writer, title, contents, createdDate, countOfAnswer) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 question.getWriter(), question.getTitle(), question.getContents(),
@@ -23,9 +23,9 @@ public class QuestionDao {
 
 
     public List<Question> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        PreparedStatementSetter pss = pstmt -> {};
+        PreparedStatementSetter pss = pstmt -> {
+        };
         RowMapper<Question> rowMapper = rs -> new Question(
                 rs.getLong("questionId"),
                 rs.getString("writer"),
@@ -43,8 +43,6 @@ public class QuestionDao {
 
     public Question findByQuestionId(long questionId) {
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         PreparedStatementSetter pss = pstmt -> pstmt.setLong(1, questionId);
 
         RowMapper<Question> rowMapper = rs -> new Question(
@@ -59,6 +57,14 @@ public class QuestionDao {
                 "FROM QUESTIONS WHERE questionId = ?";
 
         return jdbcTemplate.queryForObject(sql, pss, rowMapper);
+    }
+
+    public int addCountOfComment(long questionId) {
+        Question question = findByQuestionId(questionId);
+        int countOfComment = question.getCountOfComment();
+
+        jdbcTemplate.update("UPDATE QUESTIONS SET coundOfAnswer = " + (++countOfComment));
+        return countOfComment;
     }
 
 }

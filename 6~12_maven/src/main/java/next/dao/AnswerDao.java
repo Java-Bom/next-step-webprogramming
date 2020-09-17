@@ -13,20 +13,18 @@ import java.util.List;
  */
 public class AnswerDao {
 
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public void insert(Answer answer){
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)",
                 answer.getWriter(), answer.getContents(), answer.getCreatedDate(), answer.getQuestionId());
     }
 
     public void delete(long answerId){
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("DELETE FROM ANSWERS WHERE answerId=?", answerId);
     }
 
     public List<Answer> findAllByQuestionId(long questionId) {
-
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         PreparedStatementSetter pss = pstmt -> pstmt.setLong(1, questionId);
 

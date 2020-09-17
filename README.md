@@ -196,3 +196,50 @@ null 반환 : JSON 데이터를 생성한 후 바로 응답을 보내서 이동�
 
 
 
+# Chapter 9 중간점검
+
+#### 1. Tomcat 서버를 시작할 때 웹 애플리케이션이 초기화하는 과정을 설명하라.
+
+* 서블릿 컨테이너가 웹 애플리케이션 상태를 관리하는 ServletContext를 생성한다
+
+* ServletContext가 초기화되면 컨텍스트의 초기화 이벤트가 발생
+
+* 등록된 ServletContextListenr의 콜백 메서드가 호출된다. contextInitialized() 메서드가 호출된다.
+
+* jwp.sql 파일에서 SQL문을 실행해 데이터베이스 테이블 초기화
+
+* 서블릿 컨테이너는 클라이언트로부터의 최초 요청시 DispatcherServlet 인스턴스를 생성한다. [최초 요청 전에 할수도 있다 서블릿 컨테이너에 인스턴스를 생성하도록 미리 설정 : @WebServlet loadOnStartup 속성]
+
+* DispatcherServlet 인스턴스의 init() 메서드를 호출해 초기화 작업을 진행한다
+
+* init() 메서드 안에서 RequestMapping 객체를 생성한다
+
+* RequestMapping 인스턴스의 initMapping()을 호출한다. : 요청 URL과 Controller 인스턴스를 매핑시킨다.
+
+  
+
+#### 2. Tomcat 서버를 시작한 후 http://localhost:8080으로 접근시 호출 순서 및 흐름을 설명하라.
+
+* 요청을 처리할 서블릿에 접근하기 전에 먼저 ResourceFilter, CharacterEncodingFilter의 doFilter() 메서드가 실행된다.
+
+  ResourceFilter와 CharacterEncodingFilter의 doFilter 메서드가 실행된다. > 이때 정적자원 요청이 아니므로 servlet으로 요청을 위임한다
+
+* 요청처리가 "/" 으로 매핑되어있는 DispatcherServlet이므로 이 서블렛의 service() 메서드가 실행된다.
+
+* service() 메서드는 요청받은 URL을 분석하여 해당하는 Controller 객체를 찾는다. 이걸 찾기위해서 RequestMapping에서 가져온다. 요청 URL은 "/" 이고 HomeController가 반환된다.
+
+* service() 메서드는 HomeController안에잇는 execute() 메서드에 작업을 위임한다. 그래서 실질적인 작업은 HomeController의 execute() 메서드에서하며, 이 메서드의 반환값은 ModelAndView 이다.
+
+* Service() 메서드는 반환받은 ModelAndView 의 모델데이터를 뷰의 render()에 전달한다. 이요청에서 view는 JSPView이며 render() 메서드로 전달된 모델 데이터를 home.jsp에 전달해 HTML을 전달하고 응답에 성공한다.
+
+
+
+#### 7. next.web.qna package의 ShowController는 멀티 쓰레드 상황에서 문제가 발생하는 이유에 대해 설명하라.
+
+* 나는 ShowController에서 Question을 보여줄 때 사용하는 	`Question` , `List<Answer>`, `QuestionDao`, `AnswerDao` 를 모두 execute() 메서드안의 새로 생성되는 객체로 만들어서 사용했었다. 그런데 책에서는 반대로 모두 ShowController인스턴스의 인스턴스 변수로 사용하고있었다.
+* 이때 `Question`, `List<Answer>` 의 경우에 인스턴스 변수로 사용을 하게되면, 멀티쓰레드 상황에서 문제가 발생한다.
+* 쓰레드가 2개가 있고 첫번째 쓰레드에서 접근할때는 이상이 없다. 그러나 두번째 쓰레드가 들어올때, 만약 첫번째 쓰레드에서 execute() 메서드가 완료하지 않은 상태인 채로 두번째 쓰레드의 execute() 메서드가 실행될 때 문제가 생긴다.
+* 첫번재 쓰레드에서는  `Question`, `List<Answer>`  모두가 1번을 레퍼런스 하고있는 상황이었는데, 두번째 쓰레드가 들어옴으로 인해  `Question`, `List<Answer>`  가 2번으로 변경이 되고, ShowController는 한개의 인스턴스이므로 두개의 스레드가 같은 값을 공유를 하고있다. 즉, 첫번째 쓰레드에서는 1번을 레퍼런스를 하다가 execute() 실행 도중에 2번으로 바뀌게 되어, 1번 Question이 아닌 2번 Quesiton으로 보일 수 있다.
+* 따라서 이렇게 **상태를 갖는 값**의 경우엔 execute() 메서드 안의 **로컬변수로 구현**하여 해결할 수 있다.
+* 반면 `QuestionDao` 나 `AnswerDao` 의경우엔 **상태를 갖지 않는 값** 이므로 인스턴스 변수로 구현해도 문제가 없기 때문에, 최대한 객체 생성을 줄이는 방향으로 가기위해 **인스턴스 변수**로 구현하는게 낫다
+

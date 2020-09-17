@@ -20,7 +20,6 @@ public class DispatcherServlet extends HttpServlet {
     private static long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 
-
     private RequestMapping rm;
 
     public DispatcherServlet() {

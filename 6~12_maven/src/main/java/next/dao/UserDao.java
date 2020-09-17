@@ -8,22 +8,21 @@ import core.jdbc.RowMapper;
 import next.model.User;
 
 public class UserDao {
+
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public void insert(User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)",
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
 
     public void update(User user) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?",
                 user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
     public List<User> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         PreparedStatementSetter pss = pstmt -> {
         };
 
@@ -38,8 +37,6 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
         PreparedStatementSetter pss = pstmt -> pstmt.setString(1, userId);
 
         RowMapper<User> rowMapper = rs -> new User(

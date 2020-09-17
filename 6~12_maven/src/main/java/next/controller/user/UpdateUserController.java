@@ -13,6 +13,8 @@ import java.util.Optional;
  */
 public class UpdateUserController extends AbstractController {
 
+    private UserDao userDao = new UserDao();
+
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUserOptional = CurrentUserChecker.getCurrentUser(request);
@@ -25,7 +27,7 @@ public class UpdateUserController extends AbstractController {
         currentUser.setPassword(request.getParameter("password"));
         currentUser.setEmail(request.getParameter("email"));
 
-        new UserDao().update(currentUser);
+        userDao.update(currentUser);
 
         return jspView("redirect:/user/list");
 
