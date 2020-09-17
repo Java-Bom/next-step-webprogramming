@@ -196,3 +196,42 @@ null 반환 : JSON 데이터를 생성한 후 바로 응답을 보내서 이동�
 
 
 
+# Chapter 9 중간점검
+
+#### 1. Tomcat 서버를 시작할 때 웹 애플리케이션이 초기화하는 과정을 설명하라.
+
+* 서블릿 컨테이너가 웹 애플리케이션 상태를 관리하는 ServletContext를 생성한다
+
+* ServletContext가 초기화되면 컨텍스트의 초기화 이벤트가 발생
+
+* 등록된 ServletContextListenr의 콜백 메서드가 호출된다. contextInitialized() 메서드가 호출된다.
+
+* jwp.sql 파일에서 SQL문을 실행해 데이터베이스 테이블 초기화
+
+* 서블릿 컨테이너는 클라이언트로부터의 최초 요청시 DispatcherServlet 인스턴스를 생성한다. [최초 요청 전에 할수도 있다 서블릿 컨테이너에 인스턴스를 생성하도록 미리 설정 : @WebServlet loadOnStartup 속성]
+
+* DispatcherServlet 인스턴스의 init() 메서드를 호출해 초기화 작업을 진행한다
+
+* init() 메서드 안에서 RequestMapping 객체를 생성한다
+
+* RequestMapping 인스턴스의 initMapping()을 호출한다. : 요청 URL과 Controller 인스턴스를 매핑시킨다.
+
+  
+
+#### 2. Tomcat 서버를 시작한 후 http://localhost:8080으로 접근시 호출 순서 및 흐름을 설명하라.
+
+* 요청을 처리할 서블릿에 접근하기 전에 먼저 ResourceFilter, CharacterEncodingFilter의 doFilter() 메서드가 실행된다.
+
+  ResourceFilter와 CharacterEncodingFilter의 doFilter 메서드가 실행된다. > 이때 정적자원 요청이 아니므로 servlet으로 요청을 위임한다
+
+* 요청처리가 "/" 으로 매핑되어있는 DispatcherServlet이므로 이 서블렛의 service() 메서드가 실행된다.
+
+* service() 메서드는 요청받은 URL을 분석하여 해당하는 Controller 객체를 찾는다. 이걸 찾기위해서 RequestMapping에서 가져온다. 요청 URL은 "/" 이고 HomeController가 반환된다.
+
+* service() 메서드는 HomeController안에잇는 execute() 메서드에 작업을 위임한다. 그래서 실질적인 작업은 HomeController의 execute() 메서드에서하며, 이 메서드의 반환값은 ModelAndView 이다.
+
+* Service() 메서드는 반환받은 ModelAndView 의 모델데이터를 뷰의 render()에 전달한다. 이요청에서 view는 JSPView이며 render() 메서드로 전달된 모델 데이터를 home.jsp에 전달해 HTML을 전달하고 응답에 성공한다.
+
+#### 7. next.web.qna package의 ShowController는 멀티 쓰레드 상황에서 문제가 발생하는 이유에 대해 설명하라.
+
+* 
