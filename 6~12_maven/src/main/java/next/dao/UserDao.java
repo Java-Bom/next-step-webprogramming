@@ -9,16 +9,14 @@ import next.model.User;
 
 public class UserDao {
 
-    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
     public void insert(User user) {
-        jdbcTemplate.update("INSERT INTO USERS VALUES (?, ?, ?, ?)",
+        JdbcTemplate.getInstance().update("INSERT INTO USERS VALUES (?, ?, ?, ?)",
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
 
     public void update(User user) {
-        jdbcTemplate.update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?",
+        JdbcTemplate.getInstance().update("UPDATE USERS SET password = ?, name = ?, email = ? WHERE userid=?",
                 user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
@@ -33,7 +31,7 @@ public class UserDao {
                 rs.getString("email"));
 
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return jdbcTemplate.query(sql, pss, rowMapper);
+        return JdbcTemplate.getInstance().query(sql, pss, rowMapper);
     }
 
     public User findByUserId(String userId) {
@@ -46,6 +44,6 @@ public class UserDao {
                 rs.getString("email"));
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return jdbcTemplate.queryForObject(sql, pss, rowMapper);
+        return JdbcTemplate.getInstance().queryForObject(sql, pss, rowMapper);
     }
 }

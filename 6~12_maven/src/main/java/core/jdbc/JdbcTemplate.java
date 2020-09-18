@@ -12,6 +12,18 @@ import java.util.List;
  */
 public class JdbcTemplate {
 
+    public static JdbcTemplate jdbcTemplate;
+
+    private JdbcTemplate() {
+    }
+
+    public static JdbcTemplate getInstance() {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = new JdbcTemplate();
+        }
+        return jdbcTemplate;
+    }
+
     public void update(String sql, Object... parameters) {
         try (Connection con = ConnectionManager.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
