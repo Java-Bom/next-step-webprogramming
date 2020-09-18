@@ -27,6 +27,11 @@ public class Question {
         this.countOfComment = countOfComment;
     }
 
+    public void update(Question newQuestion){
+        this.title = newQuestion.title;
+        this.contents = newQuestion.contents;
+    }
+
     public long getQuestionId() {
         return questionId;
     }

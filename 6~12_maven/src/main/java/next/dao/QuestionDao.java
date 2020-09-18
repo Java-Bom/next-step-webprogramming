@@ -21,6 +21,10 @@ public class QuestionDao {
                 question.getCreatedDate(), question.getCountOfComment());
     }
 
+    public void update(Question question) {
+        jdbcTemplate.update("UPDATE QUESTIONS SET title = ?, contents = ? WHERE writer = ?",
+                question.getTitle(), question.getContents(), question.getWriter());
+    }
 
     public List<Question> findAll() {
 
