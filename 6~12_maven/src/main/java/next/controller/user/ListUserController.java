@@ -15,15 +15,13 @@ import java.util.Optional;
  */
 public class ListUserController extends AbstractController {
 
-    private UserDao userDao = new UserDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
         if (!currentUser.isPresent()) {
             return jspView("redirect:/user/login");
         }
-        List<User> all = userDao.findAll();
+        List<User> all = UserDao.getInstance().findAll();
 
         return jspView("/user/list.jsp").addObject("users", all);
     }

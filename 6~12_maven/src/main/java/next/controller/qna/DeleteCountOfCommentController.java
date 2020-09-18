@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteCountOfCommentController extends AbstractController {
 
-    private QuestionDao questionDao = new QuestionDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        int countOfComment = questionDao.deleteCountOfComment(questionId);
+        int countOfComment = QuestionDao.getInstance().deleteCountOfComment(questionId);
         return jsonView().addObject("countOfComment", countOfComment);
     }
 }

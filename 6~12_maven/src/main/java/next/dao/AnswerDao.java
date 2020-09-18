@@ -1,5 +1,6 @@
 package next.dao;
 
+import com.fasterxml.jackson.core.sym.NameN;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
@@ -11,6 +12,17 @@ import java.util.List;
  * Created by jyami on 2020/09/05
  */
 public class AnswerDao {
+
+    private static AnswerDao answerDao;
+
+    private AnswerDao() {}
+
+     public static AnswerDao getInstance(){
+        if(answerDao == null){
+            answerDao = new AnswerDao();
+        }
+        return answerDao;
+     }
 
     public void insert(Answer answer){
         JdbcTemplate.getInstance().update("INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)",

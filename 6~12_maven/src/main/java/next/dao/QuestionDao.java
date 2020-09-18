@@ -12,6 +12,18 @@ import java.util.List;
  */
 public class QuestionDao {
 
+    private static QuestionDao questionDao;
+
+    private QuestionDao() {
+    }
+
+    public static QuestionDao getInstance(){
+        if(questionDao == null){
+            questionDao = new QuestionDao();
+        }
+        return questionDao;
+    }
+
     public void insert(Question question) {
         JdbcTemplate.getInstance().update("INSERT INTO QUESTIONS (writer, title, contents, createdDate, countOfAnswer) " +
                         "VALUES (?, ?, ?, ?, ?)",

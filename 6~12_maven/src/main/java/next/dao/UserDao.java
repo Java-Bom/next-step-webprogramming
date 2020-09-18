@@ -9,6 +9,17 @@ import next.model.User;
 
 public class UserDao {
 
+    private static UserDao userDao;
+
+    private UserDao() {}
+
+    public static UserDao getInstance(){
+        if(userDao == null){
+            userDao = new UserDao();
+        }
+        return userDao;
+    }
+
     public void insert(User user) {
         JdbcTemplate.getInstance().update("INSERT INTO USERS VALUES (?, ?, ?, ?)",
                 user.getUserId(), user.getPassword(), user.getName(), user.getEmail());

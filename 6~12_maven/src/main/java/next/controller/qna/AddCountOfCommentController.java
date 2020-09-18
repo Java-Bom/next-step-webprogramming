@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddCountOfCommentController extends AbstractController {
 
-    private QuestionDao questionDao = new QuestionDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        int countOfComment = questionDao.addCountOfComment(questionId);
+        int countOfComment = QuestionDao.getInstance().addCountOfComment(questionId);
         return jsonView().addObject("countOfComment", countOfComment);
     }
 }

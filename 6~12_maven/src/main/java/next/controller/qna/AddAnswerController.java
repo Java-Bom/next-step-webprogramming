@@ -14,15 +14,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddAnswerController extends AbstractController {
 
-    private AnswerDao answerDao = new AnswerDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = CurrentUserChecker.getCurrentUser(request).get();
         Answer answer = new Answer(user.getUserId(), request.getParameter("contents"),
                 Long.parseLong(request.getParameter("questionId")));
 
-        answerDao.insert(answer);
+        AnswerDao.getInstance().insert(answer);
 
         return jsonView().addObject("answer", answer);
     }

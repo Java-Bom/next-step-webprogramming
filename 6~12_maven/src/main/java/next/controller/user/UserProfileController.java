@@ -14,8 +14,6 @@ import java.util.Optional;
  */
 public class UserProfileController extends AbstractController {
 
-    private UserDao userDao = new UserDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
         Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
@@ -24,7 +22,7 @@ public class UserProfileController extends AbstractController {
         }
 
         String userId = request.getParameter("userId");
-        User user = userDao.findByUserId(userId);
+        User user = UserDao.getInstance().findByUserId(userId);
         return jspView("/user/profile.jsp").addObject("user", user);
     }
 }

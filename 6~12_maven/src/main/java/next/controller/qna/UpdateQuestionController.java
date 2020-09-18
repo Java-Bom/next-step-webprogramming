@@ -16,8 +16,6 @@ import java.util.Optional;
  */
 public class UpdateQuestionController extends AbstractController {
 
-    private QuestionDao questionDao = new QuestionDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Optional<User> currentUserOptional = CurrentUserChecker.getCurrentUser(request);
@@ -26,13 +24,13 @@ public class UpdateQuestionController extends AbstractController {
         }
 
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        Question question = questionDao.findByQuestionId(questionId);
+        Question question = QuestionDao.getInstance().findByQuestionId(questionId);
         if (!question.getWriter().equals(currentUserOptional.get().getUserId())) {
             throw new IllegalStateException("다른 사용자가 쓴 글을 수정할 수 없습니다.");
         }
 
         question.update(new Question(question.getWriter(), request.getParameter("title"), request.getParameter("contents")));
-        questionDao.update(question);
+        QuestionDao.getInstance().update(question);
         return jspView("redirect:/");
     }
 }

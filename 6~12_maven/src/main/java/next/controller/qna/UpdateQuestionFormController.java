@@ -16,8 +16,6 @@ import java.util.Optional;
  */
 public class UpdateQuestionFormController extends AbstractController {
 
-    private QuestionDao questionDao = new QuestionDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Optional<User> currentUserOptional = CurrentUserChecker.getCurrentUser(request);
@@ -31,7 +29,7 @@ public class UpdateQuestionFormController extends AbstractController {
         }
 
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        Question question = questionDao.findByQuestionId(questionId);
+        Question question = QuestionDao.getInstance().findByQuestionId(questionId);
         return jspView("/qna/updateForm.jsp").addObject("question", question)
                 .addObject("writer", writer);
     }
