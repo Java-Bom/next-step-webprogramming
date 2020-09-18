@@ -16,7 +16,7 @@ public class AddCountOfCommentController extends AbstractController {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        long questionId = Long.parseLong(request.getParameter("quesetionId"));
+        long questionId = Long.parseLong(request.getParameter("questionId"));
         int countOfComment = questionDao.addCountOfComment(questionId);
         return jsonView().addObject("countOfComment", countOfComment);
     }

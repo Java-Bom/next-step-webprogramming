@@ -36,7 +36,8 @@ public class RequestMapping {
         mappings.put(new HttpRequest("/question/create", HttpMethod.POST), new CreateQuestionController());
         mappings.put(new HttpRequest("/api/qna/addAnswer", HttpMethod.POST), new AddAnswerController());
         mappings.put(new HttpRequest("/api/qna/deleteAnswer", HttpMethod.POST), new DeleteAnswerController());
-        mappings.put(new HttpRequest("/api/qna/addCoundOfAnswer", HttpMethod.POST), new AddCountOfCommentController());
+        mappings.put(new HttpRequest("/api/qna/addCountOfComment", HttpMethod.POST), new AddCountOfCommentController());
+        mappings.put(new HttpRequest("/api/qna/deleteCountOfComment", HttpMethod.POST), new DeleteCountOfCommentController());
 
         logger.info("initialized request mappings!");
     }

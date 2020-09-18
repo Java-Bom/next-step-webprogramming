@@ -63,8 +63,18 @@ public class QuestionDao {
         Question question = findByQuestionId(questionId);
         int countOfComment = question.getCountOfComment();
 
-        jdbcTemplate.update("UPDATE QUESTIONS SET coundOfAnswer = " + (++countOfComment));
+        jdbcTemplate.update("UPDATE QUESTIONS SET countOfAnswer = " + (++countOfComment) + "WHERE questionId = " + question.getQuestionId());
+
         return countOfComment;
     }
+
+    public int deleteCountOfComment(long questionId) {
+        Question question = findByQuestionId(questionId);
+        int countOfComment = question.getCountOfComment();
+
+        jdbcTemplate.update("UPDATE QUESTIONS SET countOfAnswer = " + (--countOfComment) + "WHERE questionId = " + question.getQuestionId());
+        return countOfComment;
+    }
+
 
 }
