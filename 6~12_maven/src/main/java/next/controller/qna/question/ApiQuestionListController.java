@@ -1,9 +1,8 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import next.dao.QuestionDao;
-import next.model.Question;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,8 +1,8 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.*;
+import next.controller.UserSessionUtils;
 import next.dao.QuestionDao;
-import next.model.CurrentUserChecker;
 import next.model.Question;
 import next.model.User;
 
@@ -17,13 +17,12 @@ public class CreateQuestionController extends AbstractController {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-
-        Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
-        if (!currentUser.isPresent()) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/user/login");
         }
+        User currentUser = UserSessionUtils.getUserFromSession(request.getSession());
 
-        Question question = new Question(currentUser.get().getUserId(),
+        Question question = new Question(currentUser.getUserId(),
                 request.getParameter("title"),
                 request.getParameter("contents"));
         QuestionDao.getInstance().insert(question);

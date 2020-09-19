@@ -17,8 +17,8 @@ public class QuestionDao {
     private QuestionDao() {
     }
 
-    public static QuestionDao getInstance(){
-        if(questionDao == null){
+    public static QuestionDao getInstance() {
+        if (questionDao == null) {
             questionDao = new QuestionDao();
         }
         return questionDao;
@@ -32,8 +32,12 @@ public class QuestionDao {
     }
 
     public void update(Question question) {
-        JdbcTemplate.getInstance().update("UPDATE QUESTIONS SET title = ?, contents = ? WHERE writer = ?",
-                question.getTitle(), question.getContents(), question.getWriter());
+        JdbcTemplate.getInstance().update("UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
+                question.getTitle(), question.getContents(), question.getQuestionId());
+    }
+
+    public void delete(Question question) {
+        JdbcTemplate.getInstance().update("DELETE FROM QUESTIONS WHERE questionId = ?", question.getQuestionId());
     }
 
     public List<Question> findAll() {

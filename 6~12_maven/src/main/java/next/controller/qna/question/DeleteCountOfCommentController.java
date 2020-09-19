@@ -1,4 +1,4 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;

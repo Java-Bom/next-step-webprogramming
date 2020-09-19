@@ -1,10 +1,10 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.*;
+import next.controller.UserSessionUtils;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
-import next.model.CurrentUserChecker;
 import next.model.Question;
 import next.model.User;
 
@@ -21,8 +21,7 @@ public class ShowController extends AbstractController {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
-        if (!currentUser.isPresent()) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/user/login");
         }
 

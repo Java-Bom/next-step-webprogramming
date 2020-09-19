@@ -1,4 +1,4 @@
-package next.controller.qna;
+package next.controller.qna.answer;
 
 import core.jdbc.DataAccessException;
 import core.mvc.AbstractController;
