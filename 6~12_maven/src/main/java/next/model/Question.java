@@ -32,6 +32,10 @@ public class Question {
         this.contents = newQuestion.contents;
     }
 
+    public boolean isSameUser(User user){
+        return writer.equals(user.getUserId());
+    }
+
     public long getQuestionId() {
         return questionId;
     }

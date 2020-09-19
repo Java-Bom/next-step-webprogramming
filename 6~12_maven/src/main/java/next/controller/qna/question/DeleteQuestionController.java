@@ -8,6 +8,7 @@ import next.dao.QuestionDao;
 import next.exception.CannotDeleteException;
 import next.model.Answer;
 import next.model.Question;
+import next.service.QnaService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,31 +26,20 @@ public class DeleteQuestionController extends AbstractController {
         }
 
         long questionId = Long.parseLong(request.getParameter("questionId"));
-        Question question = QuestionDao.getInstance().findByQuestionId(questionId);
-        List<Answer> answers = AnswerDao.getInstance().findAllByQuestionId(questionId);
-
-        if(question == null){
-            throw new CannotDeleteException("존재하지 않는 질문입니다.");
+        try {
+            QnaService.getInstance().deleteQuestion(questionId, UserSessionUtils.getUserFromSession(request.getSession()));
+        } catch (CannotDeleteException ex) {
+            Question question = QuestionDao.getInstance().findByQuestionId(questionId);
+            List<Answer> answers = AnswerDao.getInstance().findAllByQuestionId(questionId);
+            return createModelAndView(question, answers, ex.getMessage());
         }
-
-        if (!UserSessionUtils.isSameUser(request.getSession(), question.getWriter())) {
-            return createModelAndView(question, answers, "다른 사용자가 쓴 글을 삭제할 수 없습니다.");
-        }
-
-        if(answers.isEmpty()){
-            QuestionDao.getInstance().delete(question);
-            return jspView("redirect:/");
-        }
-
-        return createModelAndView(question, answers, "해당 글에 댓글이 존재해 삭제할 수 없습니다.");
+        return jspView("redirect:/");
     }
 
-    private ModelAndView createModelAndView(Question question, List<Answer> answers, String errorMessgae){
+    private ModelAndView createModelAndView(Question question, List<Answer> answers, String errorMessgae) {
         return jspView("/qna/show.jsp")
                 .addObject("question", question)
                 .addObject("answers", answers)
                 .addObject("errorMessage", errorMessgae);
-
     }
-
 }

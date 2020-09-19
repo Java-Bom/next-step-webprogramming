@@ -7,7 +7,6 @@ import next.dao.AnswerDao;
 import next.dao.QuestionDao;
 import next.model.Answer;
 import next.model.Question;
-import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +25,6 @@ public class UpdateQuestionFormController extends AbstractController {
         }
 
         String writer = request.getParameter("writer");
-
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Question question = QuestionDao.getInstance().findByQuestionId(questionId);
 
