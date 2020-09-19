@@ -1,8 +1,8 @@
 package next.controller.user;
 
 import core.mvc.*;
+import next.controller.UserSessionUtils;
 import next.dao.UserDao;
-import next.model.CurrentUserChecker;
 import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,16 +15,12 @@ import java.util.Optional;
  */
 public class ListUserController extends AbstractController {
 
-    private UserDao userDao = new UserDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
-        if (!currentUser.isPresent()) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/user/login");
         }
-        List<User> all = userDao.findAll();
-
+        List<User> all = UserDao.getInstance().findAll();
         return jspView("/user/list.jsp").addObject("users", all);
     }
 }

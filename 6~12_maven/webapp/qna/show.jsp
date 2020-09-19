@@ -1,8 +1,8 @@
 <%@ page import="next.model.Question" %>
-<%@ page import="next.model.CurrentUserChecker" %>
 <%@ page import="next.model.Answer" %>
 <%@ page import="java.util.List" %>
 <%@ page import="next.model.User" %>
+<%@ page import="next.controller.UserSessionUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="../common/header.jsp"/>
 
@@ -11,7 +11,11 @@
         <%
             Question question = (Question) request.getAttribute("question");
             List<Answer> answers = (List<Answer>) request.getAttribute("answers");
+            Object errorMessage = request.getAttribute("errorMessage");
+            if(errorMessage != null){
         %>
+            <div class="alert alert-danger" role="alert"><%=(String) request.getAttribute("errorMessage")%></div>
+        <%}%>
         <div class="panel panel-default">
             <header class="qna-header">
                 <h2 class="qna-title"><%=question.getTitle()%>
@@ -41,11 +45,15 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/questions/423/form">수정</a>
+                                <form class="form-delete" action="/question/update" method="GET">
+                                    <input type="hidden" name="questionId" value=<%=question.getQuestionId()%>>
+                                    <input type="hidden" name="writer" value=<%=question.getWriter()%>>
+                                    <button class="link-delete-article" type="submit">수정</button>
+                                </form>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/423" method="POST">
-                                    <input type="hidden" name="_method" value="DELETE">
+                                <form class="form-delete" action="/question/delete" method="POST">
+                                    <input type="hidden" name="questionId" value=<%=question.getQuestionId()%>>
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
                             </li>
@@ -58,7 +66,7 @@
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong><%=question.getCountOfComment()%>
+                        <p class="qna-comment-count"><strong id ="countOfComment"><%=question.getCountOfComment()%>
                         </strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
 
@@ -100,7 +108,7 @@
                                 <form name="answer" method="post">
                                     <input type="hidden" name="questionId" value=<%= question.getQuestionId()%>>
                                     <div class="form-group col-lg-4" style="padding-top:10px;">
-                                        <%User user = CurrentUserChecker.getCurrentUser(request).get();%>
+                                        <%User user = UserSessionUtils.getUserFromSession(request.getSession());%>
                                         <label> 작성자 - <%=user.getName()%></label>
                                     </div>
                                     <div class="form-group col-lg-12">
@@ -119,5 +127,5 @@
     </div>
 </div>
 
-<jsp:include page="answerTemplate.jsp"/>
+<jsp:include page="./answerTemplate.jsp"/>
 <jsp:include page="../common/footer.jsp"/>

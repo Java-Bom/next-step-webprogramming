@@ -1,4 +1,4 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
@@ -10,14 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by jyami on 2020/09/17
  */
-public class AddCountOfCommentController extends AbstractController {
-
-    private QuestionDao questionDao = new QuestionDao();
+public class DeleteCountOfCommentController extends AbstractController {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        long questionId = Long.parseLong(request.getParameter("quesetionId"));
-        int countOfComment = questionDao.addCountOfComment(questionId);
+        long questionId = Long.parseLong(request.getParameter("questionId"));
+        int countOfComment = QuestionDao.getInstance().deleteCountOfComment(questionId);
         return jsonView().addObject("countOfComment", countOfComment);
     }
 }

@@ -1,4 +1,4 @@
-<%@ page import="next.model.CurrentUserChecker" %><%--
+<%@ page import="next.controller.UserSessionUtils" %><%--
   Created by IntelliJ IDEA.
   User: jyami
   Date: 2020/08/27
@@ -20,7 +20,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../home.jsp">Posts</a></li>
                 <%
-                    if (CurrentUserChecker.getCurrentUser(request).isPresent()) {
+                    if(UserSessionUtils.isLogined(request.getSession())){
                 %>
                 <li><a href="/user/logout" role="button">로그아웃</a></li>
                 <li><a href="/user/update" role="button">개인정보수정</a></li>

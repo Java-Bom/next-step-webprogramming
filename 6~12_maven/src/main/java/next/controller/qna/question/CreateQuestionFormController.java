@@ -1,7 +1,7 @@
-package next.controller.qna;
+package next.controller.qna.question;
 
 import core.mvc.*;
-import next.model.CurrentUserChecker;
+import next.controller.UserSessionUtils;
 import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +14,10 @@ import java.util.Optional;
 public class CreateQuestionFormController extends AbstractController {
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
-        if (!currentUser.isPresent()) {
+        if(!UserSessionUtils.isLogined(request.getSession())){
             return jspView("redirect:/user/login");
         }
-        return jspView("/qna/form.jsp").addObject("user", currentUser.get());
+        User currentUser = UserSessionUtils.getUserFromSession(request.getSession());
+        return jspView("/qna/form.jsp").addObject("user", currentUser);
     }
 }

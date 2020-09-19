@@ -1,5 +1,6 @@
 <%@page import="java.util.*" %>
 <%@page import="next.model.*" %>
+<%@ page import="next.controller.UserSessionUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="../common/header.jsp"/>
 
@@ -32,7 +33,7 @@
                     <td><%=user.getEmail()%>
                     </td>
                     <%
-                        if (CurrentUserChecker.getCurrentUser(request).get().getUserId().equals(user.getUserId())) {
+                        if(UserSessionUtils.isSameUser(request.getSession(),user)){
                     %>
                     <td><a href="/user/update" class="btn btn-success" role="button">수정</a></td>
                     <%}else {%>

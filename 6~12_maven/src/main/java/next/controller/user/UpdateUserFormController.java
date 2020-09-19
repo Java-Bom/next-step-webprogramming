@@ -1,7 +1,7 @@
 package next.controller.user;
 
 import core.mvc.*;
-import next.model.CurrentUserChecker;
+import next.controller.UserSessionUtils;
 import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +14,10 @@ import java.util.Optional;
 public class UpdateUserFormController extends AbstractController {
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
-        Optional<User> currentUser = CurrentUserChecker.getCurrentUser(request);
-        if (!currentUser.isPresent()) {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/user/login");
         }
-        return jspView("/user/updateForm.jsp").addObject("user", currentUser.get());
+        User currentUser = UserSessionUtils.getUserFromSession(request.getSession());
+        return jspView("/user/updateForm.jsp").addObject("user", currentUser);
     }
 }

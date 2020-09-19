@@ -1,4 +1,4 @@
-package next.controller.qna;
+package next.controller.qna.answer;
 
 import core.jdbc.DataAccessException;
 import core.mvc.AbstractController;
@@ -14,13 +14,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteAnswerController extends AbstractController {
 
-    private AnswerDao answerDao = new AnswerDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         long answerId = Long.parseLong(request.getParameter("answerId"));
         try{
-            answerDao.delete(answerId);
+            AnswerDao.getInstance().delete(answerId);
             return jsonView().addObject("result", Result.ok());
         }catch (DataAccessException e){
             return jsonView().addObject("result", Result.fail(e.getMessage()));

@@ -20,6 +20,7 @@
                     <textarea name="contents" id="contents" rows="5" class="form-control" placeholder="내용"></textarea>
                 </div>
                 <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
+                <div class="clearfix" />
             </form>
         </div>
     </div>

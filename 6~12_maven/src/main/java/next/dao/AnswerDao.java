@@ -1,10 +1,10 @@
 package next.dao;
 
+import com.fasterxml.jackson.core.sym.NameN;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
 import next.model.Answer;
-import next.model.Question;
 
 import java.util.List;
 
@@ -13,15 +13,24 @@ import java.util.List;
  */
 public class AnswerDao {
 
-    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static AnswerDao answerDao;
+
+    private AnswerDao() {}
+
+     public static AnswerDao getInstance(){
+        if(answerDao == null){
+            answerDao = new AnswerDao();
+        }
+        return answerDao;
+     }
 
     public void insert(Answer answer){
-        jdbcTemplate.update("INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)",
+        JdbcTemplate.getInstance().update("INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)",
                 answer.getWriter(), answer.getContents(), answer.getCreatedDate(), answer.getQuestionId());
     }
 
     public void delete(long answerId){
-        jdbcTemplate.update("DELETE FROM ANSWERS WHERE answerId=?", answerId);
+        JdbcTemplate.getInstance().update("DELETE FROM ANSWERS WHERE answerId=?", answerId);
     }
 
     public List<Answer> findAllByQuestionId(long questionId) {
@@ -38,7 +47,7 @@ public class AnswerDao {
         String sql = "SELECT answerId, writer, contents, createdDate, questionId " +
                 "FROM ANSWERS WHERE questionId = ?";
 
-        return jdbcTemplate.query(sql, pss, rowMapper);
+        return JdbcTemplate.getInstance().query(sql, pss, rowMapper);
 
     }
 }

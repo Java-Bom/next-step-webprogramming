@@ -1,9 +1,10 @@
-package next.controller.qna;
+package next.controller.qna.answer;
 
 import core.mvc.*;
+import next.controller.UserSessionUtils;
 import next.dao.AnswerDao;
 import next.model.Answer;
-import next.model.CurrentUserChecker;
+import next.model.Result;
 import next.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +15,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddAnswerController extends AbstractController {
 
-    private AnswerDao answerDao = new AnswerDao();
-
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = CurrentUserChecker.getCurrentUser(request).get();
+        if (!UserSessionUtils.isLogined(request.getSession())) {
+            return jsonView().addObject("result", Result.fail("Login is required"));
+        }
+        User user = UserSessionUtils.getUserFromSession(request.getSession());
+
         Answer answer = new Answer(user.getUserId(), request.getParameter("contents"),
                 Long.parseLong(request.getParameter("questionId")));
-
-        answerDao.insert(answer);
+        AnswerDao.getInstance().insert(answer);
 
         return jsonView().addObject("answer", answer);
     }

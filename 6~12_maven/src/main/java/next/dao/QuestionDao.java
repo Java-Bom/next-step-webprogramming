@@ -12,15 +12,33 @@ import java.util.List;
  */
 public class QuestionDao {
 
-    private JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static QuestionDao questionDao;
+
+    private QuestionDao() {
+    }
+
+    public static QuestionDao getInstance() {
+        if (questionDao == null) {
+            questionDao = new QuestionDao();
+        }
+        return questionDao;
+    }
 
     public void insert(Question question) {
-        jdbcTemplate.update("INSERT INTO QUESTIONS (writer, title, contents, createdDate, countOfAnswer) " +
+        JdbcTemplate.getInstance().update("INSERT INTO QUESTIONS (writer, title, contents, createdDate, countOfAnswer) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 question.getWriter(), question.getTitle(), question.getContents(),
                 question.getCreatedDate(), question.getCountOfComment());
     }
 
+    public void update(Question question) {
+        JdbcTemplate.getInstance().update("UPDATE QUESTIONS SET title = ?, contents = ? WHERE questionId = ?",
+                question.getTitle(), question.getContents(), question.getQuestionId());
+    }
+
+    public void delete(Question question) {
+        JdbcTemplate.getInstance().update("DELETE FROM QUESTIONS WHERE questionId = ?", question.getQuestionId());
+    }
 
     public List<Question> findAll() {
 
@@ -36,7 +54,7 @@ public class QuestionDao {
 
         String sql = "SELECT questionId, writer, title, contents, createdDate, countOfAnswer FROM QUESTIONS";
 
-        return jdbcTemplate.query(sql, pss, rowMapper);
+        return JdbcTemplate.getInstance().query(sql, pss, rowMapper);
 
     }
 
@@ -56,15 +74,24 @@ public class QuestionDao {
         String sql = "SELECT questionId, writer, title, contents, createdDate, countOfAnswer " +
                 "FROM QUESTIONS WHERE questionId = ?";
 
-        return jdbcTemplate.queryForObject(sql, pss, rowMapper);
+        return JdbcTemplate.getInstance().queryForObject(sql, pss, rowMapper);
     }
 
     public int addCountOfComment(long questionId) {
         Question question = findByQuestionId(questionId);
         int countOfComment = question.getCountOfComment();
 
-        jdbcTemplate.update("UPDATE QUESTIONS SET coundOfAnswer = " + (++countOfComment));
+        JdbcTemplate.getInstance().update("UPDATE QUESTIONS SET countOfAnswer = " + (++countOfComment) + "WHERE questionId = " + question.getQuestionId());
         return countOfComment;
     }
+
+    public int deleteCountOfComment(long questionId) {
+        Question question = findByQuestionId(questionId);
+        int countOfComment = question.getCountOfComment();
+
+        JdbcTemplate.getInstance().update("UPDATE QUESTIONS SET countOfAnswer = " + (--countOfComment) + "WHERE questionId = " + question.getQuestionId());
+        return countOfComment;
+    }
+
 
 }
